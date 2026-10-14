@@ -1,0 +1,21 @@
+# Check-only: an auto-fix at commit time would rewrite staged content, so the
+# committed bytes could differ from what was reviewed. A failure tells the
+# author to run `pnpm check:fix` and re-stage.
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      glob: '*.{js,mjs,ts,tsx,json,md,yml,yaml}'
+      run: pnpm exec vp fmt --check --no-error-on-unmatched-pattern {staged_files}
+    lint:
+      glob: '*.{js,mjs,ts,tsx}'
+      run: pnpm exec vp lint --no-error-on-unmatched-pattern {staged_files}
+
+pre-push:
+  commands:
+    check:
+      run: pnpm build:packages && pnpm check && pnpm test:only
+    actionlint:
+      run: mise exec -- actionlint
+      skip:
+        - run: '! command -v mise'

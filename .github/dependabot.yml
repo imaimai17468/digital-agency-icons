@@ -1,0 +1,37 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    versioning-strategy: increase
+    # Matches minimumReleaseAge in pnpm-workspace.yaml: a version released
+    # less than 7 days ago is not proposed.
+    cooldown:
+      default-days: 7
+    groups:
+      next:
+        patterns:
+          ['next', 'react', 'react-dom', '@types/react', '@types/react-dom']
+      svelte:
+        patterns: ['svelte', 'svelte-check', '@sveltejs/*']
+      vue:
+        patterns: ['vue', 'vue-tsc', '@vitejs/plugin-vue']
+      vite:
+        patterns:
+          ['vite', 'vite-plus', 'vite-plugin-dts', '@vitejs/plugin-react']
+    commit-message:
+      prefix: chore
+      include: scope
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: chore
+      include: scope

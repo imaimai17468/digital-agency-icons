@@ -14,9 +14,11 @@ trustPolicy: no-downgrade
 # only record of what was tested.
 savePrefix: ''
 
-# Install scripts run only for a package named here. esbuild and sharp both
-# ship their binaries as platform-specific optional dependencies, so their
-# scripts have nothing left to do.
+# Install scripts run only for a package named here. esbuild, sharp and
+# lefthook ship their binaries as platform-specific optional dependencies, so
+# their scripts have nothing left to do; the root `prepare` script installs the
+# git hooks instead of lefthook's postinstall.
 allowBuilds:
   esbuild: false
+  lefthook: false
   sharp: false

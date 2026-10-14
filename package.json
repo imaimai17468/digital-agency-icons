@@ -4,6 +4,7 @@
   "private": true,
   "description": "Digital Agency Icons - Official icon library for Japanese government services",
   "scripts": {
+    "prepare": "lefthook install",
     "build": "pnpm -r build",
     "build:packages": "pnpm --filter \"./packages/*\" build",
     "dev": "pnpm --filter @digital-agency-icons/docs dev",
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
     "jsdom": "30.1.2",
+    "lefthook": "2.1.17",
     "publint": "0.3.25",
     "typescript": "6.0.3",
     "vite": "8.3.3",
