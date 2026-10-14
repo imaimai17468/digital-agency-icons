@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.5](https://github.com/imaimai17468/digital-agency-icons/compare/@imaimai17468/digital-agency-icons-core-v0.0.4...@imaimai17468/digital-agency-icons-core-v0.0.5) (2026-10-14)
+
+
+### Documentation
+
+* ドキュメントを整理し、ブランチ運用を main のみに揃える ([7d1583c](https://github.com/imaimai17468/digital-agency-icons/commit/7d1583cdff8555e4d48665ce6896062accd276d6))
+* 利用者向け README の誤りを直し、内容を整理する ([b083337](https://github.com/imaimai17468/digital-agency-icons/commit/b08333742bf40d2bc9734ac36a351e9a69cbcf5c))
+
 ## [0.0.4](https://github.com/imaimai17468/digital-agency-icons/compare/@imaimai17468/digital-agency-icons-core-v0.0.3...@imaimai17468/digital-agency-icons-core-v0.0.4) (2026-10-14)
 
 
