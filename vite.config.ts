@@ -15,6 +15,27 @@ const GENERATED = [
 const BUILD_OUTPUT = ['**/dist/**', '**/.next/**', 'apps/docs/next-env.d.ts'];
 
 export default defineConfig({
+  test: {
+    // Each suite imports its package's dist, so `pnpm build:packages` runs first.
+    projects: [
+      {
+        test: {
+          name: 'node',
+          include: ['packages/{core,react,vue}/test/**/*.test.ts'],
+        },
+      },
+      {
+        // Svelte resolves its server build under Node, and the server build
+        // cannot mount a client-compiled component.
+        resolve: { conditions: ['browser'] },
+        test: {
+          name: 'svelte',
+          include: ['packages/svelte/test/**/*.test.ts'],
+          environment: 'jsdom',
+        },
+      },
+    ],
+  },
   fmt: {
     singleQuote: true,
     semi: true,

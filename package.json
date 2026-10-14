@@ -13,10 +13,13 @@
     "format": "vp fmt --check .",
     "format:fix": "vp fmt .",
     "type-check": "pnpm -r type-check",
-    "lint:packages": "pnpm --filter \"./packages/*\" lint:package"
+    "lint:packages": "pnpm --filter \"./packages/*\" lint:package",
+    "test": "pnpm build:packages && vp test",
+    "test:only": "vp test"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
+    "jsdom": "30.1.2",
     "publint": "0.3.25",
     "typescript": "6.0.3",
     "vite": "8.3.3",
