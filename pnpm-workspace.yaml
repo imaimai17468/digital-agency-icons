@@ -1,3 +1,22 @@
 packages:
-  - 'packages/*'
-  - 'apps/*'
+  - packages/*
+  - apps/*
+
+# Minutes. A version published less than 7 days ago is not resolved, which
+# keeps a freshly compromised release out of the lockfile until it is caught.
+minimumReleaseAge: 10080
+
+# Fails the install when a package that was published with provenance or by a
+# trusted publisher ships a later version without it.
+trustPolicy: no-downgrade
+
+# `pnpm add` writes `1.2.3` rather than `^1.2.3`, so the lockfile is not the
+# only record of what was tested.
+savePrefix: ""
+
+# Install scripts run only for a package named here. esbuild and sharp both
+# ship their binaries as platform-specific optional dependencies, so their
+# scripts have nothing left to do.
+allowBuilds:
+  esbuild: false
+  sharp: false
