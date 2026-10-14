@@ -57,6 +57,7 @@ npm view @digital-agency-icons/react
 ```
 
 Reactパッケージの依存関係も更新:
+
 ```json
 "dependencies": {
   "@digital-agency-icons/core": "^0.0.2"

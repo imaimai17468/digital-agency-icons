@@ -66,6 +66,7 @@ npm公開は手動でトリガーします：
 4. 実行
 
 **必要な準備:**
+
 - GitHubのSecretsに`NPM_TOKEN`を設定する必要があります
 - npmで認証トークンを取得: `npm token create`
 - GitHubリポジトリの Settings > Secrets > Actions で設定
@@ -79,6 +80,7 @@ GitHubとVercelを連携することで、mainブランチへのプッシュで�
 ### 新機能を追加する場合
 
 1. **developブランチから機能ブランチを作成**
+
    ```bash
    git checkout develop
    git pull origin develop
@@ -86,12 +88,14 @@ GitHubとVercelを連携することで、mainブランチへのプッシュで�
    ```
 
 2. **変更を加える**
+
    ```bash
    # コードを編集
    pnpm build  # ビルドして確認
    ```
 
 3. **変更をコミット**
+
    ```bash
    git add .
    git commit -m "feat: add new feature"
@@ -106,6 +110,7 @@ GitHubとVercelを連携することで、mainブランチへのプッシュで�
    - `ci:` CI/CD関連の変更
 
 4. **プッシュとPR作成**
+
    ```bash
    git push origin feature/your-feature-name
 
@@ -126,6 +131,7 @@ GitHubとVercelを連携することで、mainブランチへのプッシュで�
 ### リリースする場合
 
 1. **develop → main へPR作成**
+
    ```bash
    git checkout develop
    gh pr create --base main --head develop --title "Release vX.X.X"
@@ -163,6 +169,7 @@ digital-agency-icons/
 **原因**: Next.jsのビルドキャッシュが古くなっている
 
 **解決方法**:
+
 ```bash
 # 開発サーバーを停止
 pkill -f "next dev"
@@ -179,6 +186,7 @@ pnpm --filter @digital-agency-icons/docs dev
 **症状**: `pnpm build` が失敗する
 
 **解決方法**:
+
 ```bash
 # node_modulesを削除して再インストール
 rm -rf node_modules

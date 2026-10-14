@@ -12,7 +12,7 @@ trustPolicy: no-downgrade
 
 # `pnpm add` writes `1.2.3` rather than `^1.2.3`, so the lockfile is not the
 # only record of what was tested.
-savePrefix: ""
+savePrefix: ''
 
 # Install scripts run only for a package named here. esbuild and sharp both
 # ship their binaries as platform-specific optional dependencies, so their

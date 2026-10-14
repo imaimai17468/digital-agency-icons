@@ -71,7 +71,11 @@ yarn add @imaimai17468/digital-agency-icons-svelte
 ### React
 
 ```tsx
-import { AddFill, SearchLine, ArrowRightFill } from '@imaimai17468/digital-agency-icons-react';
+import {
+  AddFill,
+  SearchLine,
+  ArrowRightFill,
+} from '@imaimai17468/digital-agency-icons-react';
 
 function App() {
   return (
@@ -98,7 +102,11 @@ function App() {
 
 ```vue
 <script setup lang="ts">
-import { AddFill, SearchLine, ArrowRightFill } from '@imaimai17468/digital-agency-icons-vue';
+import {
+  AddFill,
+  SearchLine,
+  ArrowRightFill,
+} from '@imaimai17468/digital-agency-icons-vue';
 </script>
 
 <template>
@@ -146,14 +154,14 @@ import { AddFill, SearchLine, ArrowRightFill } from '@imaimai17468/digital-agenc
 
 全てのアイコンコンポーネントは以下のpropsをサポートしています：
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `size` | `number \| string` | `24` | アイコンのサイズ（px） |
-| `color` | `string` | `'currentColor'` | アイコンの色 |
-| `className` | `string` | - | CSSクラス |
-| `style` | `React.CSSProperties` | - | インラインスタイル |
-| `aria-label` | `string` | - | アクセシビリティラベル |
-| `title` | `string` | - | ツールチップタイトル |
+| Prop         | Type                  | Default          | Description            |
+| ------------ | --------------------- | ---------------- | ---------------------- |
+| `size`       | `number \| string`    | `24`             | アイコンのサイズ（px） |
+| `color`      | `string`              | `'currentColor'` | アイコンの色           |
+| `className`  | `string`              | -                | CSSクラス              |
+| `style`      | `React.CSSProperties` | -                | インラインスタイル     |
+| `aria-label` | `string`              | -                | アクセシビリティラベル |
+| `title`      | `string`              | -                | ツールチップタイトル   |
 
 ## 利用可能なアイコン
 
@@ -276,6 +284,7 @@ pnpm format
 #### 開発フロー（コントリビューター向け）
 
 1. **developブランチからfeatureブランチを作成**
+
    ```bash
    git checkout develop
    git pull origin develop
@@ -283,12 +292,14 @@ pnpm format
    ```
 
 2. **変更をコミット（Conventional Commits形式）**
+
    ```bash
    git commit -m "feat: add new icon"
    git commit -m "fix: correct icon size"
    ```
 
 3. **featureブランチをプッシュしてPR作成**
+
    ```bash
    git push origin feature/your-feature-name
    # feature/your-feature-name → develop へのPRを作成
