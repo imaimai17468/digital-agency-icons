@@ -6,7 +6,7 @@ export interface ArrowRightFillProps {
   color?: string;
   class?: string;
   style?: StyleValue;
-  'aria-label'?: string;
+  ariaLabel?: string;
   title?: string;
 }
 
@@ -15,27 +15,10 @@ const props = withDefaults(defineProps<ArrowRightFillProps>(), {
   color: 'currentColor',
 });
 
-const svgStyle = computed(() => {
-  const baseStyle: StyleValue = { verticalAlign: 'middle' };
-  if (props.style) {
-    if (typeof props.style === 'string') {
-      return baseStyle;
-    }
-    return { ...baseStyle, ...props.style };
-  }
-  return baseStyle;
-});
-
-const svgAttrs = computed(() => {
-  const attrs: Record<string, any> = {};
-  if (props['aria-label']) {
-    attrs['aria-label'] = props['aria-label'];
-  }
-  if (props.title) {
-    attrs.role = 'img';
-  }
-  return attrs;
-});
+const svgStyle = computed<StyleValue>(() => [
+  { verticalAlign: 'middle' },
+  props.style,
+]);
 </script>
 
 <template>
@@ -47,7 +30,8 @@ const svgAttrs = computed(() => {
     xmlns="http://www.w3.org/2000/svg"
     :class="props.class"
     :style="svgStyle"
-    v-bind="svgAttrs"
+    :aria-label="ariaLabel"
+    :role="title ? 'img' : undefined"
   >
     <title v-if="title">{{ title }}</title>
     <path d="M9.00156 2.6001L7.60156 4.0001L15.6016 12.0001L7.60156 20.0001L9.00156 21.4001L18.4016 12.0001L9.00156 2.6001Z" :fill="color" />

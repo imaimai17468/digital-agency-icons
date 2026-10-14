@@ -6,7 +6,7 @@ export interface ArrowDownLineProps {
   color?: string;
   class?: string;
   style?: StyleValue;
-  'aria-label'?: string;
+  ariaLabel?: string;
   title?: string;
 }
 
@@ -15,27 +15,10 @@ const props = withDefaults(defineProps<ArrowDownLineProps>(), {
   color: 'currentColor',
 });
 
-const svgStyle = computed(() => {
-  const baseStyle: StyleValue = { verticalAlign: 'middle' };
-  if (props.style) {
-    if (typeof props.style === 'string') {
-      return baseStyle;
-    }
-    return { ...baseStyle, ...props.style };
-  }
-  return baseStyle;
-});
-
-const svgAttrs = computed(() => {
-  const attrs: Record<string, any> = {};
-  if (props['aria-label']) {
-    attrs['aria-label'] = props['aria-label'];
-  }
-  if (props.title) {
-    attrs.role = 'img';
-  }
-  return attrs;
-});
+const svgStyle = computed<StyleValue>(() => [
+  { verticalAlign: 'middle' },
+  props.style,
+]);
 </script>
 
 <template>
@@ -47,7 +30,8 @@ const svgAttrs = computed(() => {
     xmlns="http://www.w3.org/2000/svg"
     :class="props.class"
     :style="svgStyle"
-    v-bind="svgAttrs"
+    :aria-label="ariaLabel"
+    :role="title ? 'img' : undefined"
   >
     <title v-if="title">{{ title }}</title>
     <path d="M12 17.1L3 8L4 7L12 15L20 7L21 8L12 17.1Z" :fill="color" />

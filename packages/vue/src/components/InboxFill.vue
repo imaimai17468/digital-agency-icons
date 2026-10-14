@@ -6,7 +6,7 @@ export interface InboxFillProps {
   color?: string;
   class?: string;
   style?: StyleValue;
-  'aria-label'?: string;
+  ariaLabel?: string;
   title?: string;
 }
 
@@ -15,27 +15,10 @@ const props = withDefaults(defineProps<InboxFillProps>(), {
   color: 'currentColor',
 });
 
-const svgStyle = computed(() => {
-  const baseStyle: StyleValue = { verticalAlign: 'middle' };
-  if (props.style) {
-    if (typeof props.style === 'string') {
-      return baseStyle;
-    }
-    return { ...baseStyle, ...props.style };
-  }
-  return baseStyle;
-});
-
-const svgAttrs = computed(() => {
-  const attrs: Record<string, any> = {};
-  if (props['aria-label']) {
-    attrs['aria-label'] = props['aria-label'];
-  }
-  if (props.title) {
-    attrs.role = 'img';
-  }
-  return attrs;
-});
+const svgStyle = computed<StyleValue>(() => [
+  { verticalAlign: 'middle' },
+  props.style,
+]);
 </script>
 
 <template>
@@ -47,7 +30,8 @@ const svgAttrs = computed(() => {
     xmlns="http://www.w3.org/2000/svg"
     :class="props.class"
     :style="svgStyle"
-    v-bind="svgAttrs"
+    :aria-label="ariaLabel"
+    :role="title ? 'img' : undefined"
   >
     <title v-if="title">{{ title }}</title>
     <path d="M12 12.5L2 4.5H22L12 12.5ZM2 6.2002L12 14.2002L22 6.2002V19.5002H2V6.2002Z" :fill="color" />
