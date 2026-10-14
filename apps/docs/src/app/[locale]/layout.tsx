@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Analytics } from '@vercel/analytics/next';
 import { ThemeProvider } from '@/components/theme-provider';
+import { SITE_URL } from '@/lib/site';
 import { isLocale, locales, type Locale } from '@/locales';
 import { I18nProviderClient } from '@/locales/client';
 import '../globals.css';
@@ -26,7 +27,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
 
-  const baseUrl = 'https://digital-agency-icons.vercel.app';
+  const baseUrl = SITE_URL;
 
   const metadata: Record<Locale, LocaleMetadata> = {
     ja: {
