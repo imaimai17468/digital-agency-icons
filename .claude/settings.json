@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(pnpm build)",
+      "Bash(pnpm build:packages)",
+      "Bash(pnpm check)",
+      "Bash(pnpm check:fix)",
+      "Bash(pnpm test)",
+      "Bash(pnpm test:only)",
+      "Bash(pnpm lint)",
+      "Bash(pnpm lint:packages)",
+      "Bash(pnpm format)",
+      "Bash(pnpm format:fix)",
+      "Bash(pnpm type-check)",
+      "Bash(mise exec -- *)",
+      "Bash(actionlint)",
+      "Bash(git fetch *)",
+      "Bash(gh pr view *)",
+      "Bash(gh pr checks *)",
+      "mcp__plugin_context7_context7__*",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__*"
+    ],
+    "deny": [
+      "Bash(npm publish *)",
+      "Bash(pnpm publish *)",
+      "Bash(sudo *)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./**/.env)",
+      "Read(./**/.env.*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/stop-gate.sh",
+            "timeout": 300,
+            "statusMessage": "Stop gate: build packages, check, test..."
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "chrome-devtools-mcp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "context7@claude-plugins-official": true
+  },
+  "env": {
+    "DISABLE_TELEMETRY": "1"
+  }
+}

@@ -36,3 +36,7 @@ Thumbs.db
 
 # Packed tarballs
 *.tgz
+
+# Claude Code
+.claude/settings.local.json
+.claude/worktrees/
