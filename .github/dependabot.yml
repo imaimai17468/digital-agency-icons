@@ -10,7 +10,19 @@ updates:
     # less than 7 days ago is not proposed.
     cooldown:
       default-days: 7
+    ignore:
+      # @types/node tracks the Node major the code runs on. Vercel, which
+      # deploys the docs site, offers Node 24 and 22 only, and mise.toml pins
+      # 24, so types for a newer major would accept APIs production lacks.
+      # Raise this together with mise.toml and engines.
+      - dependency-name: '@types/node'
+        versions: ['>=25.0.0']
     groups:
+      # `typescript` is TypeScript 6 (its compiler API, which vue-tsc,
+      # vite-plugin-dts, svelte-check and Next load) and `@typescript/native`
+      # is TypeScript 7 (the `tsc` the scripts run), so the two move together.
+      typescript:
+        patterns: ['typescript', '@typescript/*']
       next:
         patterns:
           ['next', 'react', 'react-dom', '@types/react', '@types/react-dom']
