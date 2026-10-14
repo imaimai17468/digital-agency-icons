@@ -6,7 +6,7 @@ export interface DownloadLineProps {
   color?: string;
   class?: string;
   style?: StyleValue;
-  'aria-label'?: string;
+  ariaLabel?: string;
   title?: string;
 }
 
@@ -15,27 +15,10 @@ const props = withDefaults(defineProps<DownloadLineProps>(), {
   color: 'currentColor',
 });
 
-const svgStyle = computed(() => {
-  const baseStyle: StyleValue = { verticalAlign: 'middle' };
-  if (props.style) {
-    if (typeof props.style === 'string') {
-      return baseStyle;
-    }
-    return { ...baseStyle, ...props.style };
-  }
-  return baseStyle;
-});
-
-const svgAttrs = computed(() => {
-  const attrs: Record<string, any> = {};
-  if (props['aria-label']) {
-    attrs['aria-label'] = props['aria-label'];
-  }
-  if (props.title) {
-    attrs.role = 'img';
-  }
-  return attrs;
-});
+const svgStyle = computed<StyleValue>(() => [
+  { verticalAlign: 'middle' },
+  props.style,
+]);
 </script>
 
 <template>
@@ -47,7 +30,8 @@ const svgAttrs = computed(() => {
     xmlns="http://www.w3.org/2000/svg"
     :class="props.class"
     :style="svgStyle"
-    v-bind="svgAttrs"
+    :aria-label="ariaLabel"
+    :role="title ? 'img' : undefined"
   >
     <title v-if="title">{{ title }}</title>
     <path d="M18 9L19 10L12 17.1L5 10L6 9L11.2 14.2V3H12.7V14.2L18 9ZM3 21V19.5H21V21H3Z" :fill="color" />

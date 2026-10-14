@@ -1,1 +1,1 @@
-export * from './name-utils';
+export * from './name-utils.js';

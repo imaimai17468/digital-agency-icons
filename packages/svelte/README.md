@@ -1,6 +1,6 @@
 # @imaimai17468/digital-agency-icons-svelte
 
-Svelte components for Digital Agency Icons
+Svelte components for Digital Agency Icons. Supports Svelte 4 and Svelte 5.
 
 ## Installation
 
@@ -41,14 +41,14 @@ yarn add @imaimai17468/digital-agency-icons-svelte
 
 All icon components support the following props:
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `size` | `number \| string` | `24` | Icon size (px) |
-| `color` | `string` | `'currentColor'` | Icon color |
-| `class` | `string` | - | CSS class |
-| `style` | `string` | - | Inline styles |
-| `aria-label` | `string` | - | Accessibility label |
-| `title` | `string` | - | Tooltip title |
+| Prop         | Type               | Default          | Description         |
+| ------------ | ------------------ | ---------------- | ------------------- |
+| `size`       | `number \| string` | `24`             | Icon size (px)      |
+| `color`      | `string`           | `'currentColor'` | Icon color          |
+| `class`      | `string`           | -                | CSS class           |
+| `style`      | `string`           | -                | Inline styles       |
+| `aria-label` | `string`           | -                | Accessibility label |
+| `title`      | `string`           | -                | Tooltip title       |
 
 ## Available Icons
 

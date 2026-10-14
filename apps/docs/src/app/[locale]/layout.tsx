@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from '@vercel/analytics/next';
 import { ThemeProvider } from '@/components/theme-provider';
-import { locales } from '@/locales';
+import { isLocale, locales, type Locale } from '@/locales';
 import { I18nProviderClient } from '@/locales/client';
 import '../globals.css';
 
@@ -10,6 +10,14 @@ type Props = {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 };
+
+interface LocaleMetadata {
+  title: { default: string; template: string };
+  description: string;
+  keywords: string[];
+  openGraph: { title: string; description: string };
+  twitter: { title: string; description: string };
+}
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -20,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const baseUrl = 'https://digital-agency-icons.vercel.app';
 
-  const metadata: Record<string, any> = {
+  const metadata: Record<Locale, LocaleMetadata> = {
     ja: {
       title: {
         default: 'Digital Agency Icons - デジタル庁アイコンの非公式ライブラリ',
@@ -84,7 +92,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
   };
 
-  const localeMeta = metadata[locale] || metadata.en;
+  const localeMeta = isLocale(locale) ? metadata[locale] : metadata.en;
 
   return {
     metadataBase: new URL(baseUrl),
@@ -122,8 +130,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: `${baseUrl}/${locale}`,
       languages: {
-        'ja': `${baseUrl}/ja`,
-        'en': `${baseUrl}/en`,
+        ja: `${baseUrl}/ja`,
+        en: `${baseUrl}/en`,
       },
     },
   };
@@ -133,7 +141,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
 
   // Ensure that the incoming `locale` is valid
-  if (!locales.includes(locale as any)) {
+  if (!isLocale(locale)) {
     notFound();
   }
 

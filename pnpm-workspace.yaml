@@ -1,3 +1,30 @@
 packages:
-  - 'packages/*'
-  - 'apps/*'
+  - packages/*
+  - apps/*
+
+# Minutes. A version published less than 7 days ago is not resolved, which
+# keeps a freshly compromised release out of the lockfile until it is caught.
+minimumReleaseAge: 10080
+
+# Fails the install when a package that was published with provenance or by a
+# trusted publisher ships a later version without it.
+trustPolicy: no-downgrade
+
+# The last Svelte 4 release was published without provenance after Svelte 5
+# releases that had it. It is installed only as the Svelte 4 compiler the
+# compatibility test uses, and this names that one version alone.
+trustPolicyExclude:
+  - svelte@4.2.20
+
+# `pnpm add` writes `1.2.3` rather than `^1.2.3`, so the lockfile is not the
+# only record of what was tested.
+savePrefix: ''
+
+# Install scripts run only for a package named here. esbuild, sharp and
+# lefthook ship their binaries as platform-specific optional dependencies, so
+# their scripts have nothing left to do; the root `prepare` script installs the
+# git hooks instead of lefthook's postinstall.
+allowBuilds:
+  esbuild: false
+  lefthook: false
+  sharp: false

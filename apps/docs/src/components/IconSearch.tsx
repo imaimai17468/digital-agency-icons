@@ -53,6 +53,7 @@ export function IconSearch({ onSearch }: IconSearchProps) {
       <div className="flex flex-wrap gap-2">
         {categories.map((category) => (
           <button
+            type="button"
             key={category}
             onClick={() => handleCategoryChange(category)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${

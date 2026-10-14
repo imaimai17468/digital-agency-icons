@@ -6,7 +6,7 @@ export interface PersonalComputerFillProps {
   color?: string;
   class?: string;
   style?: StyleValue;
-  'aria-label'?: string;
+  ariaLabel?: string;
   title?: string;
 }
 
@@ -15,27 +15,10 @@ const props = withDefaults(defineProps<PersonalComputerFillProps>(), {
   color: 'currentColor',
 });
 
-const svgStyle = computed(() => {
-  const baseStyle: StyleValue = { verticalAlign: 'middle' };
-  if (props.style) {
-    if (typeof props.style === 'string') {
-      return baseStyle;
-    }
-    return { ...baseStyle, ...props.style };
-  }
-  return baseStyle;
-});
-
-const svgAttrs = computed(() => {
-  const attrs: Record<string, any> = {};
-  if (props['aria-label']) {
-    attrs['aria-label'] = props['aria-label'];
-  }
-  if (props.title) {
-    attrs.role = 'img';
-  }
-  return attrs;
-});
+const svgStyle = computed<StyleValue>(() => [
+  { verticalAlign: 'middle' },
+  props.style,
+]);
 </script>
 
 <template>
@@ -47,7 +30,8 @@ const svgAttrs = computed(() => {
     xmlns="http://www.w3.org/2000/svg"
     :class="props.class"
     :style="svgStyle"
-    v-bind="svgAttrs"
+    :aria-label="ariaLabel"
+    :role="title ? 'img' : undefined"
   >
     <title v-if="title">{{ title }}</title>
     <path d="M3 16.4999H10.5V19.4999H7.5V20.9999H16.5V19.4999H13.5V16.4999H21V4.8999H3V16.4999Z" :fill="color" />

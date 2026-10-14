@@ -2,8 +2,10 @@ name: Release Please
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
   release-please:
@@ -14,7 +16,7 @@ jobs:
     outputs:
       releases_created: ${{ steps.release.outputs.releases_created }}
     steps:
-      - uses: googleapis/release-please-action@v4
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -23,40 +25,46 @@ jobs:
     needs: release-please
     if: ${{ needs.release-please.outputs.releases_created == 'true' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # npm trusted publishing exchanges this OIDC token for a short-lived
+    # publish credential, so no NPM_TOKEN secret exists to leak. Provenance is
+    # attached automatically.
     permissions:
       contents: read
       id-token: write
+    environment: npm
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          version: 8
+          persist-credentials: false
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
-          registry-url: 'https://registry.npmjs.org'
+      - name: Install the toolchain from mise.toml
+        uses: jdx/mise-action@2d8d4cafcbd33be2ea37d2b6f5ad595363d1f1ca # v5.1.1
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Build packages
-        run: pnpm build
+        run: pnpm build:packages
 
-      - name: Publish to npm
+      - name: Run tests
+        run: pnpm test:only
+
+      # release-please bumps only the packages that changed, so a package
+      # whose version is already on the registry is skipped. `pnpm pack`
+      # rewrites `workspace:^` to the real version before npm publishes the
+      # tarball.
+      - name: Publish changed packages to npm
         run: |
-          cd packages/core
-          npm publish --access public --provenance
-          cd ../react
-          npm publish --access public --provenance
-          cd ../vue
-          npm publish --access public --provenance
-          cd ../svelte
-          npm publish --access public --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          set -euo pipefail
+          for dir in packages/core packages/react packages/vue packages/svelte; do
+            name=$(node -p "require('./$dir/package.json').name")
+            version=$(node -p "require('./$dir/package.json').version")
+            if npm view "$name@$version" version > /dev/null 2>&1; then
+              echo "skip $name@$version (already published)"
+              continue
+            fi
+            tarball=$(cd "$dir" && pnpm pack --json | node -p "JSON.parse(require('fs').readFileSync(0, 'utf8')).filename")
+            npm publish "$dir/$tarball" --access public
+          done

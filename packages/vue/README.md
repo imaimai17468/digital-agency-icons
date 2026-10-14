@@ -19,7 +19,11 @@ yarn add @imaimai17468/digital-agency-icons-vue
 
 ```vue
 <script setup lang="ts">
-import { AddFill, SearchLine, ArrowRightFill } from '@imaimai17468/digital-agency-icons-vue';
+import {
+  AddFill,
+  SearchLine,
+  ArrowRightFill,
+} from '@imaimai17468/digital-agency-icons-vue';
 </script>
 
 <template>
@@ -45,14 +49,14 @@ import { AddFill, SearchLine, ArrowRightFill } from '@imaimai17468/digital-agenc
 
 All icon components support the following props:
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `size` | `number \| string` | `24` | Icon size (px) |
-| `color` | `string` | `'currentColor'` | Icon color |
-| `class` | `string` | - | CSS class |
-| `style` | `StyleValue` | - | Inline styles |
-| `aria-label` | `string` | - | Accessibility label |
-| `title` | `string` | - | Tooltip title |
+| Prop         | Type               | Default          | Description         |
+| ------------ | ------------------ | ---------------- | ------------------- |
+| `size`       | `number \| string` | `24`             | Icon size (px)      |
+| `color`      | `string`           | `'currentColor'` | Icon color          |
+| `class`      | `string`           | -                | CSS class           |
+| `style`      | `StyleValue`       | -                | Inline styles       |
+| `aria-label` | `string`           | -                | Accessibility label |
+| `title`      | `string`           | -                | Tooltip title       |
 
 ## Available Icons
 

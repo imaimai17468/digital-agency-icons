@@ -1,4 +1,4 @@
-import { MetadataRoute } from 'next';
+import type { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://digital-agency-icons.vercel.app';
@@ -6,11 +6,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const routes = ['', '/icons'];
 
-  const sitemap: MetadataRoute.Sitemap = [];
+  const entries: MetadataRoute.Sitemap = [];
 
   locales.forEach((locale) => {
     routes.forEach((route) => {
-      sitemap.push({
+      entries.push({
         url: `${baseUrl}/${locale}${route}`,
         lastModified: new Date(),
         changeFrequency: 'weekly',
@@ -24,5 +24,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   });
 
-  return sitemap;
+  return entries;
 }

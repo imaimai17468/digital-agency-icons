@@ -1,14 +1,17 @@
-<script lang="ts">
-  export let size: number | string = 24;
-  export let color: string = 'currentColor';
-  let className: string = '';
+<script>
+  /** @type {number | string} */
+  export let size = 24;
+  /** @type {string} */
+  export let color = 'currentColor';
+  /** @type {string} */
+  let className = '';
   export { className as class };
-  export let style: string = '';
-  export let title: string | undefined = undefined;
+  /** @type {string} */
+  export let style = '';
+  /** @type {string | undefined} */
+  export let title = undefined;
 
   $: svgStyle = `vertical-align: middle;${style ? ' ' + style : ''}`;
-  $: ariaLabel = $$props['aria-label'] as string | undefined;
-  $: role = title ? 'img' : undefined;
 </script>
 
 <svg
@@ -19,8 +22,8 @@
   xmlns="http://www.w3.org/2000/svg"
   class={className}
   style={svgStyle}
-  aria-label={ariaLabel}
-  {role}
+  aria-label={$$props['aria-label']}
+  role={title ? 'img' : undefined}
 >
   {#if title}
     <title>{title}</title>

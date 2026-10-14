@@ -1,9 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd ../.. && pnpm install --no-frozen-lockfile --prod=false && pnpm --filter @imaimai17468/digital-agency-icons-react build && pnpm --filter @digital-agency-icons/docs build",
+  "buildCommand": "cd ../.. && pnpm --filter @digital-agency-icons/docs... build",
   "outputDirectory": ".next",
   "framework": "nextjs",
-  "installCommand": "pnpm install --no-frozen-lockfile --prod=false",
+  "installCommand": "pnpm install --frozen-lockfile",
   "git": {
     "deploymentEnabled": {
       "main": true,

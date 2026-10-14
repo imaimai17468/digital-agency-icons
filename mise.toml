@@ -1,0 +1,6 @@
+[tools]
+node = "24.21.0"
+pnpm = "12.10.1"
+actionlint = "1.7.12"
+# actionlint runs shellcheck over every `run:` block it finds.
+shellcheck = "0.11.0"

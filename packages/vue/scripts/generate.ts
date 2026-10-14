@@ -1,10 +1,5 @@
 import { readdir, readFile, writeFile, mkdir } from 'fs/promises';
 import { join, basename } from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 function toPascalCase(str: string): string {
   return str
@@ -29,7 +24,7 @@ export interface ${componentName}Props {
   color?: string;
   class?: string;
   style?: StyleValue;
-  'aria-label'?: string;
+  ariaLabel?: string;
   title?: string;
 }
 
@@ -38,27 +33,10 @@ const props = withDefaults(defineProps<${componentName}Props>(), {
   color: 'currentColor',
 });
 
-const svgStyle = computed(() => {
-  const baseStyle: StyleValue = { verticalAlign: 'middle' };
-  if (props.style) {
-    if (typeof props.style === 'string') {
-      return baseStyle;
-    }
-    return { ...baseStyle, ...props.style };
-  }
-  return baseStyle;
-});
-
-const svgAttrs = computed(() => {
-  const attrs: Record<string, any> = {};
-  if (props['aria-label']) {
-    attrs['aria-label'] = props['aria-label'];
-  }
-  if (props.title) {
-    attrs.role = 'img';
-  }
-  return attrs;
-});
+const svgStyle = computed<StyleValue>(() => [
+  { verticalAlign: 'middle' },
+  props.style,
+]);
 </script>
 
 <template>
@@ -70,7 +48,8 @@ const svgAttrs = computed(() => {
     xmlns="http://www.w3.org/2000/svg"
     :class="props.class"
     :style="svgStyle"
-    v-bind="svgAttrs"
+    :aria-label="ariaLabel"
+    :role="title ? 'img' : undefined"
   >
     <title v-if="title">{{ title }}</title>
     <path d="${pathData}" :fill="color" />
@@ -80,8 +59,8 @@ const svgAttrs = computed(() => {
 }
 
 async function generateIcons() {
-  const iconsDir = join(__dirname, '../../core/src/icons');
-  const outputDir = join(__dirname, '../src/components');
+  const iconsDir = join(import.meta.dirname, '../../core/src/icons');
+  const outputDir = join(import.meta.dirname, '../src/components');
 
   await mkdir(outputDir, { recursive: true });
 
@@ -107,10 +86,15 @@ async function generateIcons() {
 
   // Generate index file
   const indexContent = iconNames
-    .map((name) => `export { default as ${name} } from './components/${name}.vue';`)
+    .map(
+      (name) => `export { default as ${name} } from './components/${name}.vue';`
+    )
     .join('\n');
 
-  await writeFile(join(__dirname, '../src/index.ts'), indexContent + '\n');
+  await writeFile(
+    join(import.meta.dirname, '../src/index.ts'),
+    indexContent + '\n'
+  );
 
   console.log(`✓ Generated ${iconNames.length} Vue components`);
 }

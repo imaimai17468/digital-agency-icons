@@ -1,32 +1,31 @@
-import { defineConfig } from 'vite';
+import { resolve } from 'node:path';
 import vue from '@vitejs/plugin-vue';
+import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
-import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [
     vue(),
     dts({
       insertTypesEntry: true,
-      outDir: 'dist',
       include: ['src/**/*.ts', 'src/**/*.vue'],
       exclude: ['src/**/*.test.ts'],
+      // `./X.vue` does not resolve under node16/nodenext, while `./X.vue.js`
+      // resolves to the emitted `X.vue.d.ts`.
+      beforeWriteFile: (filePath, content) => ({
+        filePath,
+        content: content.replace(/(from '\.\/[^']+\.vue)'/g, "$1.js'"),
+      }),
     }),
   ],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
-      name: 'DigitalAgencyIconsVue',
+      entry: resolve(import.meta.dirname, 'src/index.ts'),
       formats: ['es'],
       fileName: () => 'index.js',
     },
-    rollupOptions: {
+    rolldownOptions: {
       external: ['vue'],
-      output: {
-        globals: {
-          vue: 'Vue',
-        },
-      },
     },
   },
 });

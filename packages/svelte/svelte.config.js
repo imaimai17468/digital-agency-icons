@@ -1,5 +1,2 @@
-import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
-
-export default {
-  preprocess: vitePreprocess(),
-};
+// Present so svelte-check reads this file, not the root vite.config.ts.
+export default {};

@@ -1,10 +1,5 @@
 import { readdir, readFile, writeFile, mkdir } from 'fs/promises';
 import { join, basename } from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 function toPascalCase(str: string): string {
   return str
@@ -18,20 +13,24 @@ async function extractPathFromSVG(svgContent: string): Promise<string> {
   return pathMatch ? pathMatch[1] : '';
 }
 
-function generateIconComponent(iconName: string, pathData: string): string {
-  const componentName = toPascalCase(iconName);
-
-  return `<script lang="ts">
-  export let size: number | string = 24;
-  export let color: string = 'currentColor';
-  let className: string = '';
+// Plain JavaScript in legacy (non-runes) syntax: Svelte 4 compiles it as is,
+// and Svelte 5 compiles it in legacy mode, so one source serves both. The
+// consumer's own compiler builds it, so no Svelte runtime is pinned here.
+function generateIconComponent(pathData: string): string {
+  return `<script>
+  /** @type {number | string} */
+  export let size = 24;
+  /** @type {string} */
+  export let color = 'currentColor';
+  /** @type {string} */
+  let className = '';
   export { className as class };
-  export let style: string = '';
-  export let title: string | undefined = undefined;
+  /** @type {string} */
+  export let style = '';
+  /** @type {string | undefined} */
+  export let title = undefined;
 
   $: svgStyle = \`vertical-align: middle;\${style ? ' ' + style : ''}\`;
-  $: ariaLabel = $$props['aria-label'] as string | undefined;
-  $: role = title ? 'img' : undefined;
 </script>
 
 <svg
@@ -42,8 +41,8 @@ function generateIconComponent(iconName: string, pathData: string): string {
   xmlns="http://www.w3.org/2000/svg"
   class={className}
   style={svgStyle}
-  aria-label={ariaLabel}
-  {role}
+  aria-label={$$props['aria-label']}
+  role={title ? 'img' : undefined}
 >
   {#if title}
     <title>{title}</title>
@@ -54,8 +53,8 @@ function generateIconComponent(iconName: string, pathData: string): string {
 }
 
 async function generateIcons() {
-  const iconsDir = join(__dirname, '../../core/src/icons');
-  const outputDir = join(__dirname, '../src/components');
+  const iconsDir = join(import.meta.dirname, '../../core/src/icons');
+  const outputDir = join(import.meta.dirname, '../src/components');
 
   await mkdir(outputDir, { recursive: true });
 
@@ -72,7 +71,7 @@ async function generateIcons() {
 
     const pathData = await extractPathFromSVG(svgContent);
 
-    const componentCode = generateIconComponent(fileName, pathData);
+    const componentCode = generateIconComponent(pathData);
 
     await writeFile(join(outputDir, `${componentName}.svelte`), componentCode);
 
@@ -81,10 +80,39 @@ async function generateIcons() {
 
   // Generate index file
   const indexContent = iconNames
-    .map((name) => `export { default as ${name} } from './components/${name}.svelte';`)
+    .map(
+      (name) =>
+        `export { default as ${name} } from './components/${name}.svelte';`
+    )
     .join('\n');
 
-  await writeFile(join(__dirname, '../src/index.ts'), indexContent + '\n');
+  await writeFile(
+    join(import.meta.dirname, '../src/index.js'),
+    indexContent + '\n'
+  );
+
+  const declarationContent = [
+    "import { SvelteComponent } from 'svelte';",
+    '',
+    'export interface IconProps {',
+    '  size?: number | string;',
+    '  color?: string;',
+    '  class?: string;',
+    '  style?: string;',
+    '  title?: string;',
+    "  'aria-label'?: string;",
+    '}',
+    '',
+    ...iconNames.map(
+      (name) =>
+        `export declare class ${name} extends SvelteComponent<IconProps> {}`
+    ),
+  ].join('\n');
+
+  await writeFile(
+    join(import.meta.dirname, '../src/index.d.ts'),
+    declarationContent + '\n'
+  );
 
   console.log(`✓ Generated ${iconNames.length} Svelte components`);
 }

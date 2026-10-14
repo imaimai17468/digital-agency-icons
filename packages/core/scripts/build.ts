@@ -1,10 +1,5 @@
 import { readdir, readFile, writeFile, mkdir } from 'fs/promises';
 import { join, basename } from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 interface IconData {
   name: string;
@@ -14,13 +9,6 @@ interface IconData {
   viewBox: string;
   width: number;
   height: number;
-}
-
-function toPascalCase(str: string): string {
-  return str
-    .split('_')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join('');
 }
 
 function getIconBaseName(fileName: string): string {
@@ -38,8 +26,8 @@ async function extractPathFromSVG(svgContent: string): Promise<string> {
 }
 
 async function buildIcons() {
-  const iconsDir = join(__dirname, '../src/icons');
-  const outputDir = join(__dirname, '../src/generated');
+  const iconsDir = join(import.meta.dirname, '../src/icons');
+  const outputDir = join(import.meta.dirname, '../src/generated');
 
   // Create output directory
   await mkdir(outputDir, { recursive: true });
@@ -74,15 +62,14 @@ async function buildIcons() {
   const iconGroups = new Map<string, IconData[]>();
   for (const icon of icons) {
     const baseName = getIconBaseName(icon.name);
-    if (!iconGroups.has(baseName)) {
-      iconGroups.set(baseName, []);
-    }
-    iconGroups.get(baseName)!.push(icon);
+    const group = iconGroups.get(baseName) ?? [];
+    group.push(icon);
+    iconGroups.set(baseName, group);
   }
 
   // Generate icon data file
   const iconDataContent = `// This file is auto-generated. Do not edit manually.
-import type { IconData } from '../types';
+import type { IconData } from '../types.js';
 
 export const iconData: Record<string, IconData> = ${JSON.stringify(
     Object.fromEntries(icons.map((icon) => [icon.name, icon])),
@@ -98,7 +85,7 @@ export type IconName = typeof iconNames[number];
   await writeFile(join(outputDir, 'icon-data.ts'), iconDataContent);
 
   // Generate index file
-  const indexContent = `export * from './icon-data';
+  const indexContent = `export * from './icon-data.js';
 `;
 
   await writeFile(join(outputDir, 'index.ts'), indexContent);

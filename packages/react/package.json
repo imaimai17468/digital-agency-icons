@@ -2,60 +2,64 @@
   "name": "@imaimai17468/digital-agency-icons-react",
   "version": "0.0.3",
   "description": "React components for Digital Agency Icons",
+  "keywords": [
+    "components",
+    "digital-agency",
+    "government",
+    "icons",
+    "japan",
+    "react"
+  ],
+  "homepage": "https://github.com/imaimai17468/digital-agency-icons#readme",
+  "bugs": {
+    "url": "https://github.com/imaimai17468/digital-agency-icons/issues"
+  },
+  "license": "MIT",
+  "author": "Digital Agency Icons Contributors",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imaimai17468/digital-agency-icons.git",
+    "directory": "packages/react"
+  },
+  "files": [
+    "dist"
+  ],
   "type": "module",
+  "sideEffects": false,
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     }
-  },
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "tsx scripts/generate.ts && vite build",
-    "dev": "tsx scripts/generate.ts --watch",
-    "type-check": "tsc --noEmit"
-  },
-  "keywords": [
-    "icons",
-    "react",
-    "digital-agency",
-    "japan",
-    "government",
-    "components"
-  ],
-  "license": "MIT",
-  "author": "Digital Agency Icons Contributors",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/imaimai17468/digital-agency-icons.git",
-    "directory": "packages/react"
-  },
-  "homepage": "https://github.com/imaimai17468/digital-agency-icons#readme",
-  "bugs": {
-    "url": "https://github.com/imaimai17468/digital-agency-icons/issues"
   },
   "publishConfig": {
     "access": "public"
   },
-  "peerDependencies": {
-    "react": "^18.0.0 || ^19.0.0"
+  "scripts": {
+    "build": "tsx scripts/generate.ts && vite build",
+    "dev": "tsx scripts/generate.ts --watch",
+    "type-check": "tsc --noEmit",
+    "lint:package": "publint --strict && attw --pack . --profile esm-only"
   },
   "dependencies": {
-    "@imaimai17468/digital-agency-icons-core": "^0.0.2"
+    "@imaimai17468/digital-agency-icons-core": "workspace:^"
   },
   "devDependencies": {
-    "@types/node": "^20.11.19",
-    "@types/react": "^18.2.55",
-    "@vitejs/plugin-react": "^4.2.1",
-    "react": "^18.2.0",
-    "tsx": "^4.7.1",
-    "typescript": "^5.3.3",
-    "vite": "^5.1.3",
-    "vite-plugin-dts": "^3.7.2"
+    "@types/node": "24.19.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3",
+    "vite": "8.3.3",
+    "vite-plugin-dts": "5.1.2"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0"
   }
 }
