@@ -12,9 +12,10 @@ An unofficial icon library for the Japanese Digital Agency design system, publis
 
 ## Toolchain
 
-`mise.toml` pins Node, pnpm, actionlint and shellcheck, and CI installs from it, so a version change goes there and nowhere else. Run commands through `mise exec --` where mise is not on the shell's PATH.
+`mise.toml` pins Node, pnpm, actionlint and shellcheck, and CI installs from it, so a version change goes there and nowhere else. Node stays on the major Vercel deploys the docs site with (24 today), and `@types/node` stays on that same major; `.github/dependabot.yml` holds `@types/node` there, so a Node major upgrade changes `mise.toml`, every `engines` and `@types/node` together once Vercel offers it. Run commands through `mise exec --` where mise is not on the shell's PATH.
 
 - **pnpm 12** workspaces. `pnpm-workspace.yaml` refuses a version published less than 7 days ago (`minimumReleaseAge`), fails on a provenance downgrade (`trustPolicy`), and runs no install script that `allowBuilds` does not name. Do not loosen these to make an install pass; pick an older version instead. `pnpm add` saves exact versions.
+- **TypeScript 7 alongside TypeScript 6.** `@typescript/native` is TypeScript 7 and provides the `tsc` every script runs. `typescript` is an alias of `@typescript/typescript6`, because TypeScript 7 ships no compiler API and vue-tsc, vite-plugin-dts, svelte-check and Next's type check load that API from `typescript`. svelte-check runs with `--tsgo`, which type-checks through TypeScript 7. Keep the two together until TypeScript 7 ships an API those tools adopt.
 - **Vite+ (`vp`)** at the root runs Oxfmt, Oxlint and the type-aware checks from the one root `vite.config.ts`. Its local docs are in `node_modules/vite-plus/docs/`. Each package still builds with its own `vite.config.ts` and upstream Vite.
 - **Next.js 16** ships version-matched docs in `apps/docs/node_modules/next/dist/docs/`. Read them before changing the docs app, because Next 16 differs from older training data (`proxy.ts` replaces `middleware.ts`, request APIs are async, `next lint` is gone).
 

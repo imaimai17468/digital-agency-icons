@@ -43,7 +43,7 @@
   "scripts": {
     "build": "tsx scripts/generate.ts",
     "dev": "tsx scripts/generate.ts --watch",
-    "type-check": "svelte-check --tsconfig ./tsconfig.json",
+    "type-check": "rm -rf .svelte-check && svelte-check --tsconfig ./tsconfig.json --tsgo",
     "lint:package": "publint --strict && attw --pack . --profile esm-only"
   },
   "dependencies": {
@@ -52,13 +52,14 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "7.3.1",
     "@types/node": "24.19.1",
+    "@typescript/native": "npm:typescript@7.0.2",
     "svelte": "5.57.2",
     "svelte-check": "4.7.6",
     "svelte4": "npm:svelte@4.2.20",
     "tsx": "4.23.15",
-    "typescript": "6.0.3",
-    "vite": "npm:@voidzero-dev/vite-plus-core@1.0.0",
-    "vite-plus": "1.0.0"
+    "typescript": "npm:@typescript/typescript6@6.0.2",
+    "vite": "npm:@voidzero-dev/vite-plus-core@1.1.0",
+    "vite-plus": "1.1.0"
   },
   "peerDependencies": {
     "svelte": "^4.0.0 || ^5.0.0"

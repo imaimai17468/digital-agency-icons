@@ -12,7 +12,12 @@ const GENERATED = [
   'packages/svelte/src/index.d.ts',
 ];
 
-const BUILD_OUTPUT = ['**/dist/**', '**/.next/**', 'apps/docs/next-env.d.ts'];
+const BUILD_OUTPUT = [
+  '**/dist/**',
+  '**/.next/**',
+  '**/.svelte-check/**',
+  'apps/docs/next-env.d.ts',
+];
 
 export default defineConfig({
   test: {
