@@ -1,6 +1,6 @@
 # @imaimai17468/digital-agency-icons-svelte
 
-Svelte components for Digital Agency Icons
+Svelte components for Digital Agency Icons. Supports Svelte 4 and Svelte 5.
 
 ## Installation
 

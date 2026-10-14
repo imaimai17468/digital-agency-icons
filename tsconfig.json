@@ -13,6 +13,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "paths": {
+      "svelte4/compiler": ["./packages/svelte/test/svelte4-compiler.d.ts"]
+    }
   }
 }

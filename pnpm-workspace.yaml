@@ -10,6 +10,12 @@ minimumReleaseAge: 10080
 # trusted publisher ships a later version without it.
 trustPolicy: no-downgrade
 
+# The last Svelte 4 release was published without provenance after Svelte 5
+# releases that had it. It is installed only as the Svelte 4 compiler the
+# compatibility test uses, and this names that one version alone.
+trustPolicyExclude:
+  - svelte@4.2.20
+
 # `pnpm add` writes `1.2.3` rather than `^1.2.3`, so the lockfile is not the
 # only record of what was tested.
 savePrefix: ''

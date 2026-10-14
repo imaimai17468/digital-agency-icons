@@ -8,15 +8,17 @@ const GENERATED = [
   'packages/vue/src/components/**',
   'packages/vue/src/index.ts',
   'packages/svelte/src/components/**',
-  'packages/svelte/src/index.ts',
-  'packages/svelte/types/**',
+  'packages/svelte/src/index.js',
+  'packages/svelte/src/index.d.ts',
 ];
 
 const BUILD_OUTPUT = ['**/dist/**', '**/.next/**', 'apps/docs/next-env.d.ts'];
 
 export default defineConfig({
   test: {
-    // Each suite imports its package's dist, so `pnpm build:packages` runs first.
+    // The core, React and Vue suites import their package's dist, so
+    // `pnpm build:packages` runs first. The Svelte package ships source, which
+    // its suite compiles itself.
     projects: [
       {
         test: {
@@ -24,16 +26,7 @@ export default defineConfig({
           include: ['packages/{core,react,vue}/test/**/*.test.ts'],
         },
       },
-      {
-        // Svelte resolves its server build under Node, and the server build
-        // cannot mount a client-compiled component.
-        resolve: { conditions: ['browser'] },
-        test: {
-          name: 'svelte',
-          include: ['packages/svelte/test/**/*.test.ts'],
-          environment: 'jsdom',
-        },
-      },
+      'packages/svelte',
     ],
   },
   fmt: {

@@ -1,21 +1,17 @@
-<script lang="ts">
-  let {
-    size = 24,
-    color = 'currentColor',
-    class: className = '',
-    style = '',
-    title,
-    'aria-label': ariaLabel,
-  }: {
-    size?: number | string;
-    color?: string;
-    class?: string;
-    style?: string;
-    title?: string;
-    'aria-label'?: string;
-  } = $props();
+<script>
+  /** @type {number | string} */
+  export let size = 24;
+  /** @type {string} */
+  export let color = 'currentColor';
+  /** @type {string} */
+  let className = '';
+  export { className as class };
+  /** @type {string} */
+  export let style = '';
+  /** @type {string | undefined} */
+  export let title = undefined;
 
-  const svgStyle = $derived(`vertical-align: middle;${style ? ' ' + style : ''}`);
+  $: svgStyle = `vertical-align: middle;${style ? ' ' + style : ''}`;
 </script>
 
 <svg
@@ -26,7 +22,7 @@
   xmlns="http://www.w3.org/2000/svg"
   class={className}
   style={svgStyle}
-  aria-label={ariaLabel}
+  aria-label={$$props['aria-label']}
   role={title ? 'img' : undefined}
 >
   {#if title}

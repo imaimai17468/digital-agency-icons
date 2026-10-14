@@ -22,24 +22,26 @@
     "directory": "packages/svelte"
   },
   "files": [
-    "dist"
+    "src"
   ],
   "type": "module",
   "sideEffects": false,
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "svelte": "./src/index.js",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "types": "./src/index.d.ts",
+      "svelte": "./src/index.js",
+      "default": "./src/index.js"
     }
   },
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "tsx scripts/generate.ts && vite build",
+    "build": "tsx scripts/generate.ts",
     "dev": "tsx scripts/generate.ts --watch",
     "type-check": "svelte-check --tsconfig ./tsconfig.json",
     "lint:package": "publint --strict && attw --pack . --profile esm-only"
@@ -52,11 +54,13 @@
     "@types/node": "24.19.1",
     "svelte": "5.57.2",
     "svelte-check": "4.7.6",
+    "svelte4": "npm:svelte@4.2.20",
     "tsx": "4.23.15",
     "typescript": "6.0.3",
-    "vite": "8.3.3"
+    "vite": "npm:@voidzero-dev/vite-plus-core@1.0.0",
+    "vite-plus": "1.0.0"
   },
   "peerDependencies": {
-    "svelte": "^5.0.0"
+    "svelte": "^4.0.0 || ^5.0.0"
   }
 }
