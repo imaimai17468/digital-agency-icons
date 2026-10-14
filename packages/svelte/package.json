@@ -18,7 +18,7 @@
   "scripts": {
     "build": "tsx scripts/generate.ts && vite build",
     "dev": "tsx scripts/generate.ts --watch",
-    "type-check": "tsc --noEmit"
+    "type-check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "keywords": [
     "icons",
@@ -43,19 +43,18 @@
     "access": "public"
   },
   "peerDependencies": {
-    "svelte": "^4.0.0 || ^5.0.0"
+    "svelte": "^5.0.0"
   },
   "dependencies": {
-    "@imaimai17468/digital-agency-icons-core": "^0.0.2"
+    "@imaimai17468/digital-agency-icons-core": "workspace:^"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^3.0.2",
-    "@types/node": "^20.11.19",
-    "svelte": "^4.2.10",
-    "svelte-check": "^3.6.4",
-    "tsx": "^4.7.1",
-    "typescript": "^5.3.3",
-    "vite": "^5.1.3",
-    "vite-plugin-dts": "^3.7.2"
+    "@sveltejs/vite-plugin-svelte": "7.3.1",
+    "@types/node": "24.19.1",
+    "svelte": "5.57.2",
+    "svelte-check": "4.7.6",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3",
+    "vite": "8.3.3"
   }
 }

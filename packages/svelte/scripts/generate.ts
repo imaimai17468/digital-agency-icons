@@ -1,10 +1,7 @@
 import { readdir, readFile, writeFile, mkdir } from 'fs/promises';
 import { join, basename } from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = import.meta.dirname;
 
 function toPascalCase(str: string): string {
   return str
@@ -18,20 +15,25 @@ async function extractPathFromSVG(svgContent: string): Promise<string> {
   return pathMatch ? pathMatch[1] : '';
 }
 
-function generateIconComponent(iconName: string, pathData: string): string {
-  const componentName = toPascalCase(iconName);
-
+function generateIconComponent(pathData: string): string {
   return `<script lang="ts">
-  export let size: number | string = 24;
-  export let color: string = 'currentColor';
-  let className: string = '';
-  export { className as class };
-  export let style: string = '';
-  export let title: string | undefined = undefined;
+  let {
+    size = 24,
+    color = 'currentColor',
+    class: className = '',
+    style = '',
+    title,
+    'aria-label': ariaLabel,
+  }: {
+    size?: number | string;
+    color?: string;
+    class?: string;
+    style?: string;
+    title?: string;
+    'aria-label'?: string;
+  } = $props();
 
-  $: svgStyle = \`vertical-align: middle;\${style ? ' ' + style : ''}\`;
-  $: ariaLabel = $$props['aria-label'] as string | undefined;
-  $: role = title ? 'img' : undefined;
+  const svgStyle = $derived(\`vertical-align: middle;\${style ? ' ' + style : ''}\`);
 </script>
 
 <svg
@@ -43,7 +45,7 @@ function generateIconComponent(iconName: string, pathData: string): string {
   class={className}
   style={svgStyle}
   aria-label={ariaLabel}
-  {role}
+  role={title ? 'img' : undefined}
 >
   {#if title}
     <title>{title}</title>
@@ -58,6 +60,7 @@ async function generateIcons() {
   const outputDir = join(__dirname, '../src/components');
 
   await mkdir(outputDir, { recursive: true });
+  await mkdir(join(__dirname, '../types'), { recursive: true });
 
   const files = await readdir(iconsDir);
   const svgFiles = files.filter((file) => file.endsWith('.svg'));
@@ -72,7 +75,7 @@ async function generateIcons() {
 
     const pathData = await extractPathFromSVG(svgContent);
 
-    const componentCode = generateIconComponent(fileName, pathData);
+    const componentCode = generateIconComponent(pathData);
 
     await writeFile(join(outputDir, `${componentName}.svelte`), componentCode);
 
@@ -85,6 +88,23 @@ async function generateIcons() {
     .join('\n');
 
   await writeFile(join(__dirname, '../src/index.ts'), indexContent + '\n');
+
+  const declarationContent = [
+    "import type { Component } from 'svelte';",
+    '',
+    'export interface IconProps {',
+    '  size?: number | string;',
+    '  color?: string;',
+    '  class?: string;',
+    '  style?: string;',
+    '  title?: string;',
+    "  'aria-label'?: string;",
+    '}',
+    '',
+    ...iconNames.map((name) => `export declare const ${name}: Component<IconProps>;`),
+  ].join('\n');
+
+  await writeFile(join(__dirname, '../types/index.d.ts'), declarationContent + '\n');
 
   console.log(`✓ Generated ${iconNames.length} Svelte components`);
 }

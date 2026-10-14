@@ -1,33 +1,29 @@
-import { defineConfig } from 'vite';
+import { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
-import dts from 'vite-plugin-dts';
-import { resolve } from 'path';
+import { defineConfig, type Plugin } from 'vite';
+
+const emitDeclarations = (): Plugin => ({
+  name: 'emit-declarations',
+  async generateBundle() {
+    this.emitFile({
+      type: 'asset',
+      fileName: 'index.d.ts',
+      source: await readFile(resolve(import.meta.dirname, 'types/index.d.ts'), 'utf-8'),
+    });
+  },
+});
 
 export default defineConfig({
-  plugins: [
-    svelte(),
-    dts({
-      insertTypesEntry: true,
-      outDir: 'dist',
-      include: ['src/**/*.ts'],
-      exclude: ['src/**/*.test.ts', 'src/**/*.svelte'],
-      skipDiagnostics: true,
-    }),
-  ],
+  plugins: [svelte(), emitDeclarations()],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
-      name: 'DigitalAgencyIconsSvelte',
+      entry: resolve(import.meta.dirname, 'src/index.ts'),
       formats: ['es'],
       fileName: () => 'index.js',
     },
-    rollupOptions: {
-      external: ['svelte', 'svelte/internal'],
-      output: {
-        globals: {
-          svelte: 'Svelte',
-        },
-      },
+    rolldownOptions: {
+      external: [/^svelte($|\/)/],
     },
   },
 });
