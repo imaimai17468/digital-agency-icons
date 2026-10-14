@@ -40,3 +40,6 @@ Thumbs.db
 # Claude Code
 .claude/settings.local.json
 .claude/worktrees/
+
+# svelte-check --tsgo writes its generated TypeScript here
+.svelte-check/
