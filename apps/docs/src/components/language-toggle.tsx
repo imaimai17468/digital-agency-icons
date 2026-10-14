@@ -11,7 +11,7 @@ export function LanguageToggle() {
     <select
       value={locale}
       onChange={(e) => changeLocale(e.target.value as 'ja' | 'en')}
-      className="px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
+      className="px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
       aria-label="言語選択"
     >
       <option value="ja">🇯🇵 日本語</option>

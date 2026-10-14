@@ -72,7 +72,7 @@ export function IconModal({ icon, variant, onClose }: IconModalProps) {
     return (
       <dialog
         ref={dialogRef}
-        className="backdrop:bg-black/50 backdrop:backdrop-blur-sm p-0 m-0 max-w-none w-full h-full max-h-none bg-transparent border-0"
+        className="backdrop:bg-black/50 backdrop:backdrop-blur-xs p-0 m-0 max-w-none w-full h-full max-h-none bg-transparent border-0"
       />
     );
 
@@ -98,7 +98,7 @@ export function IconModal({ icon, variant, onClose }: IconModalProps) {
   return (
     <dialog
       ref={dialogRef}
-      className="backdrop:bg-black/50 backdrop:backdrop-blur-sm p-0 m-0 max-w-none w-full h-full max-h-none bg-transparent border-0 flex items-center justify-center"
+      className="backdrop:bg-black/50 backdrop:backdrop-blur-xs p-0 m-0 max-w-none w-full h-full max-h-none bg-transparent border-0 flex items-center justify-center"
       aria-label={`${icon.name}アイコンの詳細`}
     >
       <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto m-4">

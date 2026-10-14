@@ -76,7 +76,7 @@ export function IconGrid({ icons }: IconGridProps) {
                 color="currentColor"
                 className="text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400"
               />
-              <span className="text-xs text-center text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 break-words w-full">
+              <span className="text-xs text-center text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 wrap-break-word w-full">
                 {icon.name}
               </span>
             </button>
