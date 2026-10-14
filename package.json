@@ -12,9 +12,12 @@
     "lint": "vp lint",
     "format": "vp fmt --check .",
     "format:fix": "vp fmt .",
-    "type-check": "pnpm -r type-check"
+    "type-check": "pnpm -r type-check",
+    "lint:packages": "pnpm --filter \"./packages/*\" lint:package"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "0.18.5",
+    "publint": "0.3.25",
     "typescript": "6.0.3",
     "vite": "8.3.3",
     "vite-plus": "1.0.0"

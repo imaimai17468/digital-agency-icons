@@ -18,20 +18,21 @@
   "author": "Digital Agency Icons Contributors",
   "repository": {
     "type": "git",
-    "url": "https://github.com/imaimai17468/digital-agency-icons.git",
+    "url": "git+https://github.com/imaimai17468/digital-agency-icons.git",
     "directory": "packages/svelte"
   },
   "files": [
     "dist"
   ],
   "type": "module",
+  "sideEffects": false,
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     }
   },
   "publishConfig": {
@@ -40,7 +41,8 @@
   "scripts": {
     "build": "tsx scripts/generate.ts && vite build",
     "dev": "tsx scripts/generate.ts --watch",
-    "type-check": "svelte-check --tsconfig ./tsconfig.json"
+    "type-check": "svelte-check --tsconfig ./tsconfig.json",
+    "lint:package": "publint --strict && attw --pack . --profile esm-only"
   },
   "dependencies": {
     "@imaimai17468/digital-agency-icons-core": "workspace:^"

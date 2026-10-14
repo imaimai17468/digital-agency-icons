@@ -1,5 +1,5 @@
 // This file is auto-generated. Do not edit manually.
-import type { IconData } from '../types';
+import type { IconData } from '../types.js';
 
 export const iconData: Record<string, IconData> = {
   "add_fill": {

@@ -93,7 +93,7 @@ async function generateIcons() {
 
   // Generate index file
   const indexContent = iconNames
-    .map((name) => `export * from './components/${name}';`)
+    .map((name) => `export * from './components/${name}.js';`)
     .join('\n');
 
   await writeFile(

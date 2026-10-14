@@ -10,6 +10,12 @@ export default defineConfig({
       insertTypesEntry: true,
       include: ['src/**/*.ts', 'src/**/*.vue'],
       exclude: ['src/**/*.test.ts'],
+      // `./X.vue` does not resolve under node16/nodenext, while `./X.vue.js`
+      // resolves to the emitted `X.vue.d.ts`.
+      beforeWriteFile: (filePath, content) => ({
+        filePath,
+        content: content.replace(/(from '\.\/[^']+\.vue)'/g, "$1.js'"),
+      }),
     }),
   ],
   build: {

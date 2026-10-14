@@ -69,7 +69,7 @@ async function buildIcons() {
 
   // Generate icon data file
   const iconDataContent = `// This file is auto-generated. Do not edit manually.
-import type { IconData } from '../types';
+import type { IconData } from '../types.js';
 
 export const iconData: Record<string, IconData> = ${JSON.stringify(
     Object.fromEntries(icons.map((icon) => [icon.name, icon])),
@@ -85,7 +85,7 @@ export type IconName = typeof iconNames[number];
   await writeFile(join(outputDir, 'icon-data.ts'), iconDataContent);
 
   // Generate index file
-  const indexContent = `export * from './icon-data';
+  const indexContent = `export * from './icon-data.js';
 `;
 
   await writeFile(join(outputDir, 'index.ts'), indexContent);
