@@ -67,12 +67,14 @@ lefthook が pre-commit でフォーマットとリント、pre-push で `pnpm c
 
 [Conventional Commits](https://www.conventionalcommits.org/) に従ってください。release-please がこれを読んで次のバージョンと CHANGELOG を決めます。
 
-| prefix                                              | 用途                                   | バージョン（0.x の間） |
-| --------------------------------------------------- | -------------------------------------- | ---------------------- |
-| `feat:`                                             | 機能追加（アイコン追加など）           | patch                  |
-| `fix:`                                              | 不具合修正                             | patch                  |
-| `feat!:` / `BREAKING CHANGE:`                       | export・props・peer の範囲の削除や変更 | minor                  |
-| `docs:` `chore:` `ci:` `test:` `refactor:` `style:` | それ以外                               | 上がらない             |
+| prefix                                                | 用途                                       | バージョン（0.x の間） |
+| ----------------------------------------------------- | ------------------------------------------ | ---------------------- |
+| `feat:`                                               | 機能追加（アイコン追加など）               | patch                  |
+| `fix:` `perf:` `refactor:` `revert:` `docs:` `style:` | 不具合修正・改善・パッケージの README など | patch                  |
+| `feat!:` / `BREAKING CHANGE:`                         | export・props・peer の範囲の削除や変更     | minor                  |
+| `chore:` `ci:` `test:` `build:`                       | リリースに含めないもの                     | 上がらない             |
+
+バージョンが上がるのは、そのコミットがそのパッケージのディレクトリ（`packages/<name>/`）を変更したときだけです。たとえば `apps/docs/` だけを変える `docs:` や `fix:` ではリリースは起きません。
 
 PR は **merge commit** でマージしてください。squash するとコミットが 1 つにまとまり、release-please が個々の `feat:` / `fix:` を拾えません。
 
