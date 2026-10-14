@@ -2,6 +2,27 @@
   "name": "@imaimai17468/digital-agency-icons-core",
   "version": "0.0.3",
   "description": "Core SVG data and utilities for Digital Agency Icons",
+  "keywords": [
+    "digital-agency",
+    "government",
+    "icons",
+    "japan",
+    "svg"
+  ],
+  "homepage": "https://github.com/imaimai17468/digital-agency-icons#readme",
+  "bugs": {
+    "url": "https://github.com/imaimai17468/digital-agency-icons/issues"
+  },
+  "license": "MIT",
+  "author": "Digital Agency Icons Contributors",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/imaimai17468/digital-agency-icons.git",
+    "directory": "packages/core"
+  },
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -16,34 +37,13 @@
       "types": "./dist/icons/index.d.ts"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsx scripts/build.ts && tsc",
     "dev": "tsx scripts/build.ts --watch",
     "type-check": "tsc --noEmit"
-  },
-  "keywords": [
-    "icons",
-    "digital-agency",
-    "japan",
-    "government",
-    "svg"
-  ],
-  "license": "MIT",
-  "author": "Digital Agency Icons Contributors",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/imaimai17468/digital-agency-icons.git",
-    "directory": "packages/core"
-  },
-  "homepage": "https://github.com/imaimai17468/digital-agency-icons#readme",
-  "bugs": {
-    "url": "https://github.com/imaimai17468/digital-agency-icons/issues"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "devDependencies": {
     "@types/node": "24.19.1",

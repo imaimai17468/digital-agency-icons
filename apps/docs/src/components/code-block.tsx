@@ -36,6 +36,7 @@ export function CodeBlock({ npm, yarn, pnpm }: CodeBlockProps) {
       <div className="flex gap-2 mb-3">
         {pnpm && (
           <button
+            type="button"
             onClick={() => setSelected('pnpm')}
             className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
               selected === 'pnpm'
@@ -48,6 +49,7 @@ export function CodeBlock({ npm, yarn, pnpm }: CodeBlockProps) {
         )}
         {npm && (
           <button
+            type="button"
             onClick={() => setSelected('npm')}
             className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
               selected === 'npm'
@@ -60,6 +62,7 @@ export function CodeBlock({ npm, yarn, pnpm }: CodeBlockProps) {
         )}
         {yarn && (
           <button
+            type="button"
             onClick={() => setSelected('yarn')}
             className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
               selected === 'yarn'
@@ -74,7 +77,8 @@ export function CodeBlock({ npm, yarn, pnpm }: CodeBlockProps) {
       <div className="relative bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
         <code className="text-sm">{commands[selected]}</code>
         <button
-          onClick={handleCopy}
+          type="button"
+          onClick={() => void handleCopy()}
           className="absolute top-2 right-2 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
           aria-label="Copy to clipboard"
         >

@@ -1,8 +1,6 @@
 import { readdir, readFile, writeFile, mkdir } from 'fs/promises';
 import { join, basename } from 'path';
 
-const __dirname = import.meta.dirname;
-
 interface IconData {
   name: string;
   variant: 'fill' | 'line';
@@ -11,13 +9,6 @@ interface IconData {
   viewBox: string;
   width: number;
   height: number;
-}
-
-function toPascalCase(str: string): string {
-  return str
-    .split('_')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join('');
 }
 
 function getIconBaseName(fileName: string): string {
@@ -35,8 +26,8 @@ async function extractPathFromSVG(svgContent: string): Promise<string> {
 }
 
 async function buildIcons() {
-  const iconsDir = join(__dirname, '../src/icons');
-  const outputDir = join(__dirname, '../src/generated');
+  const iconsDir = join(import.meta.dirname, '../src/icons');
+  const outputDir = join(import.meta.dirname, '../src/generated');
 
   // Create output directory
   await mkdir(outputDir, { recursive: true });
@@ -71,10 +62,9 @@ async function buildIcons() {
   const iconGroups = new Map<string, IconData[]>();
   for (const icon of icons) {
     const baseName = getIconBaseName(icon.name);
-    if (!iconGroups.has(baseName)) {
-      iconGroups.set(baseName, []);
-    }
-    iconGroups.get(baseName)!.push(icon);
+    const group = iconGroups.get(baseName) ?? [];
+    group.push(icon);
+    iconGroups.set(baseName, group);
   }
 
   // Generate icon data file

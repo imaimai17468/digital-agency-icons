@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState, useRef } from 'react';
-import * as Icons from '@imaimai17468/digital-agency-icons-react';
-import type { IconInfo } from '@/lib/icons';
+import { getIconComponent, renderIcon, type IconInfo } from '@/lib/icons';
 import { useI18n } from '@/locales/client';
 
 interface IconModalProps {
@@ -18,10 +17,13 @@ export function IconModal({ icon, variant, onClose }: IconModalProps) {
 
   useEffect(() => {
     const dialog = dialogRef.current;
-    if (!dialog) return;
+    if (!dialog) return undefined;
 
     if (icon) {
-      triggerElementRef.current = document.activeElement as HTMLElement;
+      triggerElementRef.current =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
       dialog.showModal();
       document.body.style.overflow = 'hidden';
 
@@ -78,7 +80,7 @@ export function IconModal({ icon, variant, onClose }: IconModalProps) {
 
   const componentName =
     variant === 'fill' ? icon.fillComponent : icon.lineComponent;
-  const IconComponent = (Icons as any)[componentName];
+  const hasIcon = getIconComponent(componentName) !== undefined;
 
   const importStatement = `import { ${componentName} } from '@imaimai17468/digital-agency-icons-react';`;
   const usageExample = `<${componentName} size={24} color="currentColor" />`;
@@ -90,9 +92,10 @@ export function IconModal({ icon, variant, onClose }: IconModalProps) {
 />`;
 
   const copyToClipboard = (text: string, label: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedItem(label);
-    setTimeout(() => setCopiedItem(null), 2000);
+    void navigator.clipboard.writeText(text).then(() => {
+      setCopiedItem(label);
+      setTimeout(() => setCopiedItem(null), 2000);
+    });
   };
 
   return (
@@ -105,9 +108,9 @@ export function IconModal({ icon, variant, onClose }: IconModalProps) {
         {/* ヘッダー */}
         <div className="sticky top-0 z-10 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            {IconComponent && (
+            {hasIcon && (
               <div className="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
-                <IconComponent size={32} color="currentColor" />
+                {renderIcon(componentName, { size: 32, color: 'currentColor' })}
               </div>
             )}
             <div>
@@ -118,6 +121,7 @@ export function IconModal({ icon, variant, onClose }: IconModalProps) {
             </div>
           </div>
           <button
+            type="button"
             onClick={onClose}
             className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
             aria-label={t('modal.close')}
@@ -148,6 +152,7 @@ export function IconModal({ icon, variant, onClose }: IconModalProps) {
                 <code>{importStatement}</code>
               </pre>
               <button
+                type="button"
                 onClick={() => copyToClipboard(importStatement, 'import')}
                 className="absolute top-2 right-2 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                 aria-label="Copy to clipboard"
@@ -190,12 +195,15 @@ export function IconModal({ icon, variant, onClose }: IconModalProps) {
 
           {/* 基本的な使い方 */}
           <section>
-            <h3 className="text-lg font-semibold mb-3">{t('modal.basicUsage')}</h3>
+            <h3 className="text-lg font-semibold mb-3">
+              {t('modal.basicUsage')}
+            </h3>
             <div className="relative">
               <pre className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 overflow-x-auto text-sm">
                 <code>{usageExample}</code>
               </pre>
               <button
+                type="button"
                 onClick={() => copyToClipboard(usageExample, 'basic')}
                 className="absolute top-2 right-2 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                 aria-label="Copy to clipboard"
@@ -238,12 +246,15 @@ export function IconModal({ icon, variant, onClose }: IconModalProps) {
 
           {/* プロパティ付きの使い方 */}
           <section>
-            <h3 className="text-lg font-semibold mb-3">{t('modal.customization')}</h3>
+            <h3 className="text-lg font-semibold mb-3">
+              {t('modal.customization')}
+            </h3>
             <div className="relative">
               <pre className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 overflow-x-auto text-sm">
                 <code>{usageExampleWithProps}</code>
               </pre>
               <button
+                type="button"
                 onClick={() =>
                   copyToClipboard(usageExampleWithProps, 'advanced')
                 }
@@ -295,9 +306,7 @@ export function IconModal({ icon, variant, onClose }: IconModalProps) {
                   key={size}
                   className="flex flex-col items-center justify-center gap-2 p-4 border border-gray-200 dark:border-gray-700 rounded-lg"
                 >
-                  {IconComponent && (
-                    <IconComponent size={size} color="currentColor" />
-                  )}
+                  {renderIcon(componentName, { size, color: 'currentColor' })}
                   <span className="text-xs text-gray-500">{size}px</span>
                 </div>
               ))}
@@ -306,17 +315,25 @@ export function IconModal({ icon, variant, onClose }: IconModalProps) {
 
           {/* Props */}
           <section>
-            <h3 className="text-lg font-semibold mb-3">{t('modal.availableProps')}</h3>
+            <h3 className="text-lg font-semibold mb-3">
+              {t('modal.availableProps')}
+            </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="bg-gray-100 dark:bg-gray-800">
                   <tr>
-                    <th className="px-4 py-2 text-left font-semibold">{t('modal.prop')}</th>
-                    <th className="px-4 py-2 text-left font-semibold">{t('modal.type')}</th>
+                    <th className="px-4 py-2 text-left font-semibold">
+                      {t('modal.prop')}
+                    </th>
+                    <th className="px-4 py-2 text-left font-semibold">
+                      {t('modal.type')}
+                    </th>
                     <th className="px-4 py-2 text-left font-semibold">
                       {t('modal.default')}
                     </th>
-                    <th className="px-4 py-2 text-left font-semibold">{t('modal.description')}</th>
+                    <th className="px-4 py-2 text-left font-semibold">
+                      {t('modal.description')}
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">

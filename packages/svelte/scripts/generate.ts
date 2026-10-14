@@ -1,8 +1,6 @@
 import { readdir, readFile, writeFile, mkdir } from 'fs/promises';
 import { join, basename } from 'path';
 
-const __dirname = import.meta.dirname;
-
 function toPascalCase(str: string): string {
   return str
     .split('_')
@@ -56,11 +54,11 @@ function generateIconComponent(pathData: string): string {
 }
 
 async function generateIcons() {
-  const iconsDir = join(__dirname, '../../core/src/icons');
-  const outputDir = join(__dirname, '../src/components');
+  const iconsDir = join(import.meta.dirname, '../../core/src/icons');
+  const outputDir = join(import.meta.dirname, '../src/components');
 
   await mkdir(outputDir, { recursive: true });
-  await mkdir(join(__dirname, '../types'), { recursive: true });
+  await mkdir(join(import.meta.dirname, '../types'), { recursive: true });
 
   const files = await readdir(iconsDir);
   const svgFiles = files.filter((file) => file.endsWith('.svg'));
@@ -84,10 +82,16 @@ async function generateIcons() {
 
   // Generate index file
   const indexContent = iconNames
-    .map((name) => `export { default as ${name} } from './components/${name}.svelte';`)
+    .map(
+      (name) =>
+        `export { default as ${name} } from './components/${name}.svelte';`
+    )
     .join('\n');
 
-  await writeFile(join(__dirname, '../src/index.ts'), indexContent + '\n');
+  await writeFile(
+    join(import.meta.dirname, '../src/index.ts'),
+    indexContent + '\n'
+  );
 
   const declarationContent = [
     "import type { Component } from 'svelte';",
@@ -101,10 +105,15 @@ async function generateIcons() {
     "  'aria-label'?: string;",
     '}',
     '',
-    ...iconNames.map((name) => `export declare const ${name}: Component<IconProps>;`),
+    ...iconNames.map(
+      (name) => `export declare const ${name}: Component<IconProps>;`
+    ),
   ].join('\n');
 
-  await writeFile(join(__dirname, '../types/index.d.ts'), declarationContent + '\n');
+  await writeFile(
+    join(import.meta.dirname, '../types/index.d.ts'),
+    declarationContent + '\n'
+  );
 
   console.log(`✓ Generated ${iconNames.length} Svelte components`);
 }

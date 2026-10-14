@@ -12,7 +12,7 @@ export interface IconProps {
   size?: number | string;
   color?: string;
   className?: string;
-  style?: Record<string, any>;
+  style?: object;
   'aria-label'?: string;
   title?: string;
 }

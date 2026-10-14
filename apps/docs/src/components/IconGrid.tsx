@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { IconInfo } from '@/lib/icons';
-import * as Icons from '@imaimai17468/digital-agency-icons-react';
+import { getIconComponent, type IconInfo } from '@/lib/icons';
 import { IconModal } from './IconModal';
 import { useI18n } from '@/locales/client';
 
@@ -35,6 +34,7 @@ export function IconGrid({ icons }: IconGridProps) {
       {/* バリアント切り替え */}
       <div className="flex gap-2 justify-end">
         <button
+          type="button"
           onClick={() => setVariant('fill')}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
             variant === 'fill'
@@ -45,6 +45,7 @@ export function IconGrid({ icons }: IconGridProps) {
           Fill
         </button>
         <button
+          type="button"
           onClick={() => setVariant('line')}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
             variant === 'line'
@@ -59,13 +60,15 @@ export function IconGrid({ icons }: IconGridProps) {
       {/* アイコングリッド */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
         {icons.map((icon) => {
-          const componentName = variant === 'fill' ? icon.fillComponent : icon.lineComponent;
-          const IconComponent = (Icons as any)[componentName];
+          const componentName =
+            variant === 'fill' ? icon.fillComponent : icon.lineComponent;
+          const IconComponent = getIconComponent(componentName);
 
           if (!IconComponent) return null;
 
           return (
             <button
+              type="button"
               key={`${icon.name}-${variant}`}
               onClick={() => setSelectedIcon(icon)}
               className="group relative flex flex-col items-center justify-center gap-2 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"

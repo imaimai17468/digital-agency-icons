@@ -3,14 +3,15 @@
 import * as React from 'react';
 import { useTheme } from 'next-themes';
 
+const subscribeToNothing = () => () => {};
+
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = React.useState(false);
-
-  // useEffect only runs on the client, so now we can safely show the UI
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = React.useSyncExternalStore(
+    subscribeToNothing,
+    () => true,
+    () => false
+  );
 
   if (!mounted) {
     return (

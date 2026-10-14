@@ -2,6 +2,28 @@
   "name": "@imaimai17468/digital-agency-icons-svelte",
   "version": "0.0.2",
   "description": "Svelte components for Digital Agency Icons",
+  "keywords": [
+    "components",
+    "digital-agency",
+    "government",
+    "icons",
+    "japan",
+    "svelte"
+  ],
+  "homepage": "https://github.com/imaimai17468/digital-agency-icons#readme",
+  "bugs": {
+    "url": "https://github.com/imaimai17468/digital-agency-icons/issues"
+  },
+  "license": "MIT",
+  "author": "Digital Agency Icons Contributors",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/imaimai17468/digital-agency-icons.git",
+    "directory": "packages/svelte"
+  },
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -12,38 +34,13 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsx scripts/generate.ts && vite build",
     "dev": "tsx scripts/generate.ts --watch",
     "type-check": "svelte-check --tsconfig ./tsconfig.json"
-  },
-  "keywords": [
-    "icons",
-    "svelte",
-    "digital-agency",
-    "japan",
-    "government",
-    "components"
-  ],
-  "license": "MIT",
-  "author": "Digital Agency Icons Contributors",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/imaimai17468/digital-agency-icons.git",
-    "directory": "packages/svelte"
-  },
-  "homepage": "https://github.com/imaimai17468/digital-agency-icons#readme",
-  "bugs": {
-    "url": "https://github.com/imaimai17468/digital-agency-icons/issues"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "peerDependencies": {
-    "svelte": "^5.0.0"
   },
   "dependencies": {
     "@imaimai17468/digital-agency-icons-core": "workspace:^"
@@ -56,5 +53,8 @@
     "tsx": "4.23.15",
     "typescript": "6.0.3",
     "vite": "8.3.3"
+  },
+  "peerDependencies": {
+    "svelte": "^5.0.0"
   }
 }

@@ -8,7 +8,6 @@ export default defineConfig({
     vue(),
     dts({
       insertTypesEntry: true,
-      outDir: 'dist',
       include: ['src/**/*.ts', 'src/**/*.vue'],
       exclude: ['src/**/*.test.ts'],
     }),

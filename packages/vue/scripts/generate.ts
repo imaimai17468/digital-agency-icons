@@ -1,8 +1,6 @@
 import { readdir, readFile, writeFile, mkdir } from 'fs/promises';
 import { join, basename } from 'path';
 
-const __dirname = import.meta.dirname;
-
 function toPascalCase(str: string): string {
   return str
     .split('_')
@@ -77,8 +75,8 @@ const svgAttrs = computed(() => {
 }
 
 async function generateIcons() {
-  const iconsDir = join(__dirname, '../../core/src/icons');
-  const outputDir = join(__dirname, '../src/components');
+  const iconsDir = join(import.meta.dirname, '../../core/src/icons');
+  const outputDir = join(import.meta.dirname, '../src/components');
 
   await mkdir(outputDir, { recursive: true });
 
@@ -104,10 +102,15 @@ async function generateIcons() {
 
   // Generate index file
   const indexContent = iconNames
-    .map((name) => `export { default as ${name} } from './components/${name}.vue';`)
+    .map(
+      (name) => `export { default as ${name} } from './components/${name}.vue';`
+    )
     .join('\n');
 
-  await writeFile(join(__dirname, '../src/index.ts'), indexContent + '\n');
+  await writeFile(
+    join(import.meta.dirname, '../src/index.ts'),
+    indexContent + '\n'
+  );
 
   console.log(`✓ Generated ${iconNames.length} Vue components`);
 }

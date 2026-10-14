@@ -2,6 +2,28 @@
   "name": "@imaimai17468/digital-agency-icons-react",
   "version": "0.0.3",
   "description": "React components for Digital Agency Icons",
+  "keywords": [
+    "components",
+    "digital-agency",
+    "government",
+    "icons",
+    "japan",
+    "react"
+  ],
+  "homepage": "https://github.com/imaimai17468/digital-agency-icons#readme",
+  "bugs": {
+    "url": "https://github.com/imaimai17468/digital-agency-icons/issues"
+  },
+  "license": "MIT",
+  "author": "Digital Agency Icons Contributors",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/imaimai17468/digital-agency-icons.git",
+    "directory": "packages/react"
+  },
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -12,38 +34,13 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsx scripts/generate.ts && vite build",
     "dev": "tsx scripts/generate.ts --watch",
     "type-check": "tsc --noEmit"
-  },
-  "keywords": [
-    "icons",
-    "react",
-    "digital-agency",
-    "japan",
-    "government",
-    "components"
-  ],
-  "license": "MIT",
-  "author": "Digital Agency Icons Contributors",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/imaimai17468/digital-agency-icons.git",
-    "directory": "packages/react"
-  },
-  "homepage": "https://github.com/imaimai17468/digital-agency-icons#readme",
-  "bugs": {
-    "url": "https://github.com/imaimai17468/digital-agency-icons/issues"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "peerDependencies": {
-    "react": "^18.0.0 || ^19.0.0"
   },
   "dependencies": {
     "@imaimai17468/digital-agency-icons-core": "workspace:^"
@@ -57,5 +54,8 @@
     "typescript": "6.0.3",
     "vite": "8.3.3",
     "vite-plugin-dts": "5.1.2"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0"
   }
 }

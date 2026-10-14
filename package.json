@@ -7,14 +7,21 @@
     "build": "pnpm -r build",
     "build:packages": "pnpm --filter \"./packages/*\" build",
     "dev": "pnpm --filter @digital-agency-icons/docs dev",
+    "check": "vp check && pnpm -r type-check",
+    "check:fix": "vp check --fix",
+    "lint": "vp lint",
+    "format": "vp fmt --check .",
+    "format:fix": "vp fmt .",
     "type-check": "pnpm -r type-check"
   },
   "devDependencies": {
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "vite": "8.3.3",
+    "vite-plus": "1.0.0"
   },
-  "packageManager": "pnpm@12.10.1",
   "engines": {
     "node": ">=24.11.0",
     "pnpm": ">=12.10.0"
-  }
+  },
+  "packageManager": "pnpm@12.10.1"
 }

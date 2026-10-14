@@ -9,7 +9,10 @@ const emitDeclarations = (): Plugin => ({
     this.emitFile({
       type: 'asset',
       fileName: 'index.d.ts',
-      source: await readFile(resolve(import.meta.dirname, 'types/index.d.ts'), 'utf-8'),
+      source: await readFile(
+        resolve(import.meta.dirname, 'types/index.d.ts'),
+        'utf-8'
+      ),
     });
   },
 });

@@ -8,7 +8,6 @@ export default defineConfig({
     react(),
     dts({
       insertTypesEntry: true,
-      outDir: 'dist',
       include: ['src/**/*.ts', 'src/**/*.tsx'],
       exclude: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
     }),
