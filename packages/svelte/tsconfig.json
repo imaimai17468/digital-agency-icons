@@ -5,7 +5,6 @@
     "rootDir": "./src",
     "declaration": true,
     "declarationMap": true,
-    "composite": true,
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "types": ["svelte"]
