@@ -2,7 +2,7 @@
   "name": "digital-agency-icons",
   "version": "1.0.0",
   "private": true,
-  "description": "Digital Agency Icons - Official icon library for Japanese government services",
+  "description": "Unofficial React / Vue / Svelte components for the Japanese Digital Agency design system icons",
   "scripts": {
     "prepare": "lefthook install",
     "build": "pnpm -r build",
