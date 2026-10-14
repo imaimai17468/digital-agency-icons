@@ -10,6 +10,10 @@ An unofficial icon library for the Japanese Digital Agency design system, publis
 | `packages/svelte` | Svelte components generated from core's SVGs, for Svelte 4 and Svelte 5   | `@imaimai17468/digital-agency-icons-svelte` |
 | `apps/docs`       | The docs site (Next.js 16 App Router, Tailwind CSS 4, next-international) | not published; deployed by Vercel           |
 
+## Documentation
+
+`README.md` is for library users (install, usage, props), `.github/CONTRIBUTING.md` for contributors (setup, commands, adding an icon, the PR flow), and `PUBLISHING.md` for releasing. Each fact lives in one of them, and the package READMEs are what npm shows for that package. A change to props, commands or the release flow updates the document that owns it in the same change.
+
 ## Toolchain
 
 `mise.toml` pins Node, pnpm, actionlint and shellcheck, and CI installs from it, so a version change goes there and nowhere else. Node stays on the major Vercel deploys the docs site with (24 today), and `@types/node` stays on that same major; `.github/dependabot.yml` holds `@types/node` there, so a Node major upgrade changes `mise.toml`, every `engines` and `@types/node` together once Vercel offers it. Run commands through `mise exec --` where mise is not on the shell's PATH.
@@ -65,7 +69,7 @@ The Stop hook in `.claude/settings.json` runs `pnpm build:packages`, `pnpm check
 
 ## Commits & Pull Requests
 
-- `main` takes changes only through a pull request; on `main`, create a branch before the first commit.
+- `main` is the only long-lived branch and takes changes only through a pull request; on `main`, create a branch before the first commit. Merge with a merge commit, never a squash, so release-please still sees each `feat:` and `fix:`.
 - One commit is one purpose, and a drive-by fix is its own commit. Stage explicit paths, never `git add -A` or `git add .`.
 - Conventional Commits prefixes (`feat` / `fix` / `refactor` / `test` / `docs` / `chore` / `ci` / `style`), because release-please reads them to choose the next version and write the changelog. The subject states what improves; the body is in Japanese, and a `fix` or `refactor` body says why.
 - Releases are cut by merging the release-please PR. Publishing runs in CI through npm Trusted Publishing; never publish from a local machine.
