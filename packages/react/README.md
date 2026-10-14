@@ -1,15 +1,13 @@
-# @digital-agency-icons/react
+# @imaimai17468/digital-agency-icons-react
 
-デジタル庁公式アイコンのReactコンポーネントライブラリ
+[デジタル庁デザインシステム](https://www.digital.go.jp/policies/servicedesign/designsystem/Illustration_Icons)のアイコンを React 18 / 19 で使うための非公式コンポーネント集です。
+
+アイコン一覧・検索: https://digital-agency-icons-docs.vercel.app
 
 ## インストール
 
 ```bash
-pnpm add @digital-agency-icons/react
-# or
-npm install @digital-agency-icons/react
-# or
-yarn add @digital-agency-icons/react
+pnpm add @imaimai17468/digital-agency-icons-react
 ```
 
 ## 使い方
@@ -17,40 +15,34 @@ yarn add @digital-agency-icons/react
 ```tsx
 import {
   AddFill,
-  SearchLine,
   ArrowRightFill,
-} from '@digital-agency-icons/react';
+  SearchLine,
+} from '@imaimai17468/digital-agency-icons-react';
 
-function App() {
+export function Example() {
   return (
-    <div>
+    <>
       <AddFill />
       <SearchLine size={32} color="#1A1A1C" />
-      <ArrowRightFill size={24} aria-label="次へ" />
-    </div>
+      <ArrowRightFill aria-label="次へ" title="次へ進む" />
+    </>
   );
 }
 ```
 
 ## Props
 
-| Prop         | Type                  | Default          | Description            |
-| ------------ | --------------------- | ---------------- | ---------------------- |
-| `size`       | `number \| string`    | `24`             | アイコンのサイズ（px） |
-| `color`      | `string`              | `'currentColor'` | アイコンの色           |
-| `className`  | `string`              | -                | CSSクラス              |
-| `style`      | `React.CSSProperties` | -                | インラインスタイル     |
-| `aria-label` | `string`              | -                | アクセシビリティラベル |
-| `title`      | `string`              | -                | ツールチップタイトル   |
+| Prop         | 型                 | デフォルト       | 説明                                      |
+| ------------ | ------------------ | ---------------- | ----------------------------------------- |
+| `size`       | `number \| string` | `24`             | 幅と高さ（px）                            |
+| `color`      | `string`           | `'currentColor'` | 塗りの色                                  |
+| `title`      | `string`           | -                | `<title>` を出力し、`role="img"` を付ける |
+| `aria-label` | `string`           | -                | スクリーンリーダー向けのラベル            |
+| `className`  | `string`           | -                | CSS クラス                                |
+| `style`      | `CSSProperties`    | -                | `vertical-align: middle` に追加される     |
 
-## Features
-
-- ✅ TypeScript完全対応
-- ✅ Tree-shaking対応
-- ✅ 120個のアイコン（Fill/Line）
-- ✅ アクセシビリティ対応
-- ✅ React 18/19対応
+コンポーネント名はアイコン名の PascalCase にバリアント（`Fill` / `Line`）を付けたものです（例: `ArrowRightFill`）。
 
 ## ライセンス
 
-MIT
+コードは MIT です。アイコンのデザインはデジタル庁が公開しているもので、利用条件は[デジタル庁デザインシステムのページ](https://www.digital.go.jp/policies/servicedesign/designsystem/Illustration_Icons)に従います。本パッケージはデジタル庁とは関係のない非公式のものです。

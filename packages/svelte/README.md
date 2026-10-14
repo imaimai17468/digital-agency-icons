@@ -1,64 +1,42 @@
 # @imaimai17468/digital-agency-icons-svelte
 
-Svelte components for Digital Agency Icons. Supports Svelte 4 and Svelte 5.
+[デジタル庁デザインシステム](https://www.digital.go.jp/policies/servicedesign/designsystem/Illustration_Icons)のアイコンを Svelte 4 / 5 で使うための非公式コンポーネント集です。
 
-## Installation
+アイコン一覧・検索: https://digital-agency-icons-docs.vercel.app
+
+## インストール
 
 ```bash
-# pnpm
 pnpm add @imaimai17468/digital-agency-icons-svelte
-
-# npm
-npm install @imaimai17468/digital-agency-icons-svelte
-
-# yarn
-yarn add @imaimai17468/digital-agency-icons-svelte
 ```
 
-## Usage
+## 使い方
 
 ```svelte
-<script lang="ts">
-  import { AddFill, SearchLine, ArrowRightFill } from '@imaimai17468/digital-agency-icons-svelte';
+<script>
+  import { AddFill, ArrowRightFill, SearchLine } from '@imaimai17468/digital-agency-icons-svelte';
 </script>
 
-<!-- Default: 24px, currentColor -->
 <AddFill />
-
-<!-- Custom size and color -->
 <SearchLine size={32} color="#1A1A1C" />
-
-<!-- Accessibility support -->
-<ArrowRightFill
-  size={24}
-  color="currentColor"
-  aria-label="次へ"
-  title="次へ進む"
-/>
+<ArrowRightFill aria-label="次へ" title="次へ進む" />
 ```
+
+このパッケージはコンパイル前の `.svelte` を配布し、利用側の Svelte でビルドされます。SvelteKit や `@sveltejs/vite-plugin-svelte` を使う通常の構成なら追加の設定は不要です。
 
 ## Props
 
-All icon components support the following props:
+| Prop         | 型                 | デフォルト       | 説明                                      |
+| ------------ | ------------------ | ---------------- | ----------------------------------------- |
+| `size`       | `number \| string` | `24`             | 幅と高さ（px）                            |
+| `color`      | `string`           | `'currentColor'` | 塗りの色                                  |
+| `title`      | `string`           | -                | `<title>` を出力し、`role="img"` を付ける |
+| `aria-label` | `string`           | -                | スクリーンリーダー向けのラベル            |
+| `class`      | `string`           | -                | CSS クラス                                |
+| `style`      | `string`           | -                | `vertical-align: middle` に追加される     |
 
-| Prop         | Type               | Default          | Description         |
-| ------------ | ------------------ | ---------------- | ------------------- |
-| `size`       | `number \| string` | `24`             | Icon size (px)      |
-| `color`      | `string`           | `'currentColor'` | Icon color          |
-| `class`      | `string`           | -                | CSS class           |
-| `style`      | `string`           | -                | Inline styles       |
-| `aria-label` | `string`           | -                | Accessibility label |
-| `title`      | `string`           | -                | Tooltip title       |
+コンポーネント名はアイコン名の PascalCase にバリアント（`Fill` / `Line`）を付けたものです（例: `ArrowRightFill`）。
 
-## Available Icons
+## ライセンス
 
-Icons are available in two variants:
-
-- **Fill**: Filled style (e.g., `AddFill`, `SearchFill`)
-- **Line**: Outline style (e.g., `AddLine`, `SearchLine`)
-
-See the [documentation site](https://github.com/imaimai17468/digital-agency-icons) for a full list of available icons.
-
-## License
-
-MIT
+コードは MIT です。アイコンのデザインはデジタル庁が公開しているもので、利用条件は[デジタル庁デザインシステムのページ](https://www.digital.go.jp/policies/servicedesign/designsystem/Illustration_Icons)に従います。本パッケージはデジタル庁とは関係のない非公式のものです。
