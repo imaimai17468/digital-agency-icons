@@ -7,7 +7,7 @@ An unofficial icon library for the Japanese Digital Agency design system, publis
 | `packages/core`   | The source SVGs (`src/icons/*.svg`) and the icon data generated from them | `@imaimai17468/digital-agency-icons-core`   |
 | `packages/react`  | React components generated from core's SVGs                               | `@imaimai17468/digital-agency-icons-react`  |
 | `packages/vue`    | Vue 3 SFCs generated from core's SVGs                                     | `@imaimai17468/digital-agency-icons-vue`    |
-| `packages/svelte` | Svelte 5 components generated from core's SVGs, compiled for the client   | `@imaimai17468/digital-agency-icons-svelte` |
+| `packages/svelte` | Svelte components generated from core's SVGs, for Svelte 4 and Svelte 5   | `@imaimai17468/digital-agency-icons-svelte` |
 | `apps/docs`       | The docs site (Next.js 16 App Router, Tailwind CSS 4, next-international) | not published; deployed by Vercel           |
 
 ## Toolchain
@@ -35,7 +35,7 @@ An unofficial icon library for the Japanese Digital Agency design system, publis
 
 ## Generated Code
 
-Everything under `packages/*/src/components/`, each framework package's `src/index.ts`, `packages/core/src/generated/` and `packages/svelte/types/` is written by the generator in that package's `scripts/`. Change the generator and run `pnpm build:packages`; never edit the output by hand, because the next build overwrites it. The output is committed so a reviewer sees what a generator change does to every icon. Format and lint skip these paths.
+Everything under `packages/*/src/components/`, each framework package's `src/index.*`, and `packages/core/src/generated/` is written by the generator in that package's `scripts/`. Change the generator and run `pnpm build:packages`; never edit the output by hand, because the next build overwrites it. The output is committed so a reviewer sees what a generator change does to every icon. Format and lint skip these paths.
 
 Adding an icon means adding `<name>_fill.svg` and `<name>_line.svg` to `packages/core/src/icons/`, then registering its metadata in `apps/docs/src/lib/icons.ts` so the docs site lists it.
 
@@ -45,12 +45,12 @@ The four packages are used by other people's code, so their shape is a contract.
 
 - The props are the same across frameworks: `size`, `color`, `class`/`className`, `style`, `title` and an accessible label (`aria-label`; Vue declares it as `ariaLabel`, which templates still write as `aria-label`). A change to one framework's props is made to all four generators.
 - `exports` lists `types` before `default`, and every relative import in emitted `.d.ts` carries an extension, so types resolve under `bundler` and `node16`/`nodenext`. `pnpm lint:packages` fails when either breaks.
-- Svelte components are compiled for the client and externalize every `svelte/*` import, so the consumer's Svelte 5 runtime is the only copy.
+- The Svelte package supports Svelte 4 and Svelte 5 (`peerDependencies: ^4.0.0 || ^5.0.0`). It ships the `.svelte` sources, not compiled output, so the consumer's own compiler builds them against its own runtime. The generator therefore writes plain JavaScript in legacy (non-runes) syntax, which both versions compile; runes, `lang="ts"` and other Svelte 5-only syntax break Svelte 4 users. The test suite compiles every component with both compilers (`svelte` and the `svelte4` alias).
 - Removing or renaming an export, a prop, or a peer dependency range is a breaking change. Say so in the commit (`feat!:` or a `BREAKING CHANGE:` footer) so release-please bumps the version accordingly.
 
 ## Testing
 
-`packages/*/test/` holds contract tests that import each package's built `dist` and render it with its own framework (React and Vue through SSR, Svelte by mounting under jsdom). They check what consumers receive, so a change to a generator gets a test that renders the changed output and fails without the change.
+`packages/*/test/` holds contract tests that import each package's built `dist` and render it with its own framework (React and Vue through SSR, Svelte by mounting its source under jsdom). They check what consumers receive, so a change to a generator gets a test that renders the changed output and fails without the change.
 
 ## Verification
 

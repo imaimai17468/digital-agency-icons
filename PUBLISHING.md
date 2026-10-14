@@ -1,129 +1,47 @@
 # Publishing Guide
 
-## 初回公開手順
+npm への公開は GitHub Actions（`.github/workflows/release-please.yml`）から [npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers) で行います。`NPM_TOKEN` は使いません。ローカルからの `npm publish` は行わないでください。
 
-### 1. npmにログイン
+## リリースの流れ
 
-```bash
-npm login
-```
+1. Conventional Commits 形式のコミットが main にマージされる
+2. release-please がリリース PR（バージョン更新と CHANGELOG）を作成・更新する
+3. リリース PR をマージすると GitHub Release が作成され、`publish` ジョブがバージョンの上がったパッケージだけを公開する
+   - `workspace:^` は `pnpm pack` で実際のバージョンに書き換わる
+   - provenance は自動で付与される（公開リポジトリのため）
 
-### 2. パッケージのビルド
+## 初回セットアップ（npmjs.com で一度だけ）
 
-```bash
-# Core パッケージのビルド
-pnpm --filter @digital-agency-icons/core build
+4 パッケージそれぞれで設定します。
 
-# React パッケージのビルド
-pnpm --filter @digital-agency-icons/react build
-```
+- `@imaimai17468/digital-agency-icons-core`
+- `@imaimai17468/digital-agency-icons-react`
+- `@imaimai17468/digital-agency-icons-vue`
+- `@imaimai17468/digital-agency-icons-svelte`
 
-### 3. パッケージの公開
+1. npmjs.com のパッケージページ → **Settings** → **Trusted Publisher** で **GitHub Actions** を選ぶ
+2. 次のとおり入力して保存する
 
-**重要**: パッケージは依存関係の順に公開する必要があります
+   | 項目                 | 値                     |
+   | -------------------- | ---------------------- |
+   | Organization or user | `imaimai17468`         |
+   | Repository           | `digital-agency-icons` |
+   | Workflow filename    | `release-please.yml`   |
+   | Environment name     | `npm`                  |
 
-```bash
-# 1. まず core パッケージを公開
-cd packages/core
-npm publish --access public
+3. GitHub リポジトリの **Settings → Environments** に `npm` 環境を作成する（必要なら承認者を設定）
+4. 動作を確認したら、各パッケージの **Settings → Publishing access** で「Require two-factor authentication and disallow tokens」を選び、トークンでの公開を禁止する
+5. GitHub の Secrets に残っている `NPM_TOKEN` を削除する
 
-# 2. 次に react パッケージを公開（coreに依存）
-cd ../react
-npm publish --access public
-```
+npm は保存時に設定を検証しないため、誤りは初回公開時に失敗として表れます。
 
-### 4. 公開の確認
+## 公開前の確認
 
-```bash
-# Core パッケージ
-npm view @digital-agency-icons/core
-
-# React パッケージ
-npm view @digital-agency-icons/react
-```
-
-## バージョンアップ手順
-
-### 1. バージョンの更新
-
-各パッケージの `package.json` でバージョンを更新:
+CI と同じ検査をローカルで実行できます。
 
 ```bash
-# packages/core/package.json
-"version": "0.0.2"
-
-# packages/react/package.json
-"version": "0.0.2"
+pnpm build:packages
+pnpm check
+pnpm test:only
+pnpm lint:packages   # publint / arethetypeswrong
 ```
-
-Reactパッケージの依存関係も更新:
-
-```json
-"dependencies": {
-  "@digital-agency-icons/core": "^0.0.2"
-}
-```
-
-### 2. ビルドと公開
-
-```bash
-# ビルド
-pnpm build
-
-# Core を公開
-cd packages/core && npm publish
-
-# React を公開
-cd ../react && npm publish
-```
-
-## Changesets を使った自動バージョニング（推奨）
-
-現在は手動でバージョン管理していますが、将来的には changesets の導入を推奨します:
-
-```bash
-# Changesets のインストール
-pnpm add -Dw @changesets/cli
-pnpm changeset init
-
-# バージョン変更の記録
-pnpm changeset
-
-# バージョンアップとCHANGELOG生成
-pnpm changeset version
-
-# 公開
-pnpm changeset publish
-```
-
-## トラブルシューティング
-
-### workspace:* の依存関係エラー
-
-公開前に `workspace:*` を実際のバージョン番号に変更してください:
-
-```json
-// ❌ 間違い
-"@digital-agency-icons/core": "workspace:*"
-
-// ✅ 正しい
-"@digital-agency-icons/core": "^0.0.1"
-```
-
-### 2要素認証（2FA）
-
-npmで2FAを有効にしている場合、公開時にワンタイムパスワードが必要です:
-
-```bash
-npm publish --otp=123456
-```
-
-## 公開前チェックリスト
-
-- [ ] すべてのテストが通過している
-- [ ] ビルドが成功している（`pnpm build`）
-- [ ] READMEが最新である
-- [ ] package.jsonのバージョンが正しい
-- [ ] workspace依存関係が実際のバージョン番号になっている
-- [ ] CHANGELOGが更新されている（該当する場合）
-- [ ] gitでタグ付けする予定がある場合は準備完了

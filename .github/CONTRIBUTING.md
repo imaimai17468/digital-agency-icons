@@ -24,8 +24,10 @@ feature/xxx (機能ブランチ)
 
 ### 必要な環境
 
-- Node.js 18以上
-- pnpm 8以上
+- Node.js 24.11 以上
+- pnpm 12.10 以上
+
+バージョンは `mise.toml` で固定しています。[mise](https://mise.jdx.dev/) を使う場合は `mise install` で揃います。
 
 ### セットアップ手順
 
@@ -38,38 +40,35 @@ cd digital-agency-icons
 pnpm install
 
 # パッケージのビルド
-pnpm build
+pnpm build:packages
 
 # 開発サーバーの起動
-pnpm --filter @digital-agency-icons/docs dev
+pnpm dev
 ```
 
 ## CI/CDについて
 
 ### CI（継続的インテグレーション）
 
-すべてのPRとmainブランチへのプッシュで自動的に実行されます：
+すべての PR と main / develop へのプッシュで `.github/workflows/ci.yml` が実行されます：
 
-- **Lint & Type Check**: コードの品質チェック
-- **Build**: すべてのパッケージのビルド
-- **Multi-version Test**: Node.js 18, 20, 22でのビルド確認
+- lockfile どおりのインストール（7日未満の新しい版・provenance の後退を拒否）
+- `pnpm audit` による脆弱性チェック
+- actionlint によるワークフローの検査
+- `pnpm check`（フォーマット・リント・型チェック）
+- テスト
+- publint / arethetypeswrong による公開メタデータと型解決の検査
+- 紹介サイトのビルド
+
+ローカルでは lefthook が pre-commit でフォーマットとリント、pre-push で上記の主要チェックを実行します。
 
 ### CD（継続的デプロイ）
 
 #### npm公開
 
-npm公開は手動でトリガーします：
+main へのマージで release-please がリリース PR を作成・更新します。リリース PR をマージすると、バージョンが上がったパッケージだけが GitHub Actions から npm に公開されます。
 
-1. GitHub Actionsの「Publish to npm」ワークフローを開く
-2. 「Run workflow」をクリック
-3. 公開するバージョン（例: 0.0.3）を入力
-4. 実行
-
-**必要な準備:**
-
-- GitHubのSecretsに`NPM_TOKEN`を設定する必要があります
-- npmで認証トークンを取得: `npm token create`
-- GitHubリポジトリの Settings > Secrets > Actions で設定
+公開は npm の [Trusted Publishing](https://docs.npmjs.com/trusted-publishers)（OIDC）で行うため、`NPM_TOKEN` は不要です。ローカルから `npm publish` はしないでください。
 
 #### Vercelデプロイ
 
@@ -91,13 +90,15 @@ GitHubとVercelを連携することで、mainブランチへのプッシュで�
 
    ```bash
    # コードを編集
-   pnpm build  # ビルドして確認
+   pnpm build:packages
+   pnpm check
+   pnpm test:only
    ```
 
 3. **変更をコミット**
 
    ```bash
-   git add .
+   git add <変更したファイル>
    git commit -m "feat: add new feature"
    ```
 
@@ -119,10 +120,7 @@ GitHubとVercelを連携することで、mainブランチへのプッシュで�
    ```
 
 5. **CIの成功を確認**
-   PRを作成すると自動的に以下が実行されます：
-   - ビルドチェック
-   - 型チェック
-   - パッケージサイズの表示
+   PRを作成すると CI が自動的に実行されます
 
 6. **レビューとマージ**
    - CIが通過したら、レビューを待ちます
@@ -142,8 +140,7 @@ GitHubとVercelを連携することで、mainブランチへのプッシュで�
    - バージョン番号を決定
 
 3. **マージ後、npm公開**
-   - GitHub Actionsの「Publish to npm」ワークフローを手動実行
-   - バージョン番号を入力して公開
+   - release-please が作成するリリース PR をマージすると自動で公開されます
 
 ## パッケージ構造
 
@@ -178,7 +175,7 @@ pkill -f "next dev"
 rm -rf apps/docs/.next
 
 # 開発サーバーを再起動
-pnpm --filter @digital-agency-icons/docs dev
+pnpm dev
 ```
 
 ### ビルドエラーが出る

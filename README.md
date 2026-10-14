@@ -130,6 +130,8 @@ import {
 
 ### Svelte
 
+Svelte 4 と Svelte 5 の両方に対応しています。
+
 ```svelte
 <script lang="ts">
   import { AddFill, SearchLine, ArrowRightFill } from '@imaimai17468/digital-agency-icons-svelte';
@@ -233,17 +235,14 @@ import {
 
 ## 開発
 
+Node.js と pnpm のバージョンは `mise.toml` で固定しています。[mise](https://mise.jdx.dev/) を使う場合は `mise install` で揃います。
+
 ### セットアップ
 
 ```bash
-# 依存関係のインストール
-pnpm install
-
-# 全パッケージのビルド
-pnpm build
-
-# 開発サーバーの起動（紹介サイト）
-pnpm --filter @digital-agency-icons/docs dev
+pnpm install          # 依存関係のインストール（lefthook の Git フックも入る）
+pnpm build:packages   # 4 パッケージのビルド
+pnpm dev              # 紹介サイトの起動
 ```
 
 ### プロジェクト構成
@@ -251,35 +250,29 @@ pnpm --filter @digital-agency-icons/docs dev
 ```
 digital-agency-icons/
 ├── packages/
-│   ├── core/           # SVGデータとコア機能
-│   ├── react/          # Reactコンポーネント
-│   ├── vue/            # Vue 3コンポーネント
-│   └── svelte/         # Svelteコンポーネント
-├── apps/
-│   └── docs/           # 紹介サイト（Next.js）
-└── assets/
-    └── icons/          # 元のSVGファイル
+│   ├── core/           # 元の SVG (src/icons) と生成データ
+│   ├── react/          # React コンポーネント（生成）
+│   ├── vue/            # Vue 3 コンポーネント（生成）
+│   └── svelte/         # Svelte 4 / 5 コンポーネント（生成）
+└── apps/
+    └── docs/           # 紹介サイト（Next.js 16）
 ```
+
+各フレームワークのコンポーネントは `packages/*/scripts/` の生成スクリプトが core の SVG から出力します。生成物は手で編集せず、スクリプトを変更して `pnpm build:packages` を実行してください。
 
 ### スクリプト
 
-```bash
-# 全パッケージのビルド
-pnpm build
-
-# 開発モード
-pnpm dev
-
-# リント
-pnpm lint
-
-# フォーマット
-pnpm format
-```
+| コマンド             | 内容                                           |
+| -------------------- | ---------------------------------------------- |
+| `pnpm build`         | 全パッケージと紹介サイトのビルド               |
+| `pnpm check`         | フォーマット・リント・型チェック（Vite+）      |
+| `pnpm check:fix`     | フォーマットとリントの自動修正                 |
+| `pnpm test`          | パッケージをビルドしてテストを実行             |
+| `pnpm lint:packages` | 公開メタデータと型解決の検査（publint / attw） |
 
 ### リリースフロー
 
-このプロジェクトは [release-please](https://github.com/googleapis/release-please) を使用した自動リリースを採用しています。
+このプロジェクトは [release-please](https://github.com/googleapis/release-please) を使用した自動リリースを採用しています。npm への公開は GitHub Actions から [Trusted Publishing](https://docs.npmjs.com/trusted-publishers) で行い、provenance が付与されます。
 
 #### 開発フロー（コントリビューター向け）
 
