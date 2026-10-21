@@ -44,7 +44,7 @@
     "lint:package": "publint --strict && attw --pack . --profile esm-only"
   },
   "devDependencies": {
-    "@types/node": "24.19.1",
+    "@types/node": "24.19.2",
     "@typescript/native": "npm:typescript@7.0.2",
     "tsx": "4.23.15",
     "typescript": "npm:@typescript/typescript6@6.0.2"
