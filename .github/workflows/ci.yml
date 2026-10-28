@@ -26,7 +26,7 @@ jobs:
       # Installs node, pnpm and actionlint at the versions mise.toml pins, so
       # that file is the one place those versions are written.
       - name: Install the toolchain from mise.toml
-        uses: jdx/mise-action@2d8d4cafcbd33be2ea37d2b6f5ad595363d1f1ca # v5.1.1
+        uses: jdx/mise-action@8418fedb1110381a0d3ba51a7a415d7c1b884550 # v5.2.2
 
       # pnpm-workspace.yaml's minimumReleaseAge and trustPolicy are checked
       # against every lockfile entry here, not only at resolution time.
